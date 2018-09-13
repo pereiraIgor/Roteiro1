@@ -1,12 +1,6 @@
 package sorting.divideAndConquer;
 
-import java.awt.List;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import sorting.AbstractSorting;
-import util.Util;
 
 /**
  * Merge sort is based on the divide-and-conquer paradigm. The algorithm
@@ -16,25 +10,43 @@ import util.Util;
  */
 public class MergeSort<T extends Comparable<T>> extends AbstractSorting<T> {
 
-	@Override
-	public void sort(T[] array, int leftIndex, int rightIndex) {
-		if (leftIndex >= rightIndex) {
-			return;
-		} else {
-			sort(array, leftIndex, (int) Math.ceil((leftIndex + rightIndex) / 2));
-			sort(array, (int) Math.ceil((leftIndex + rightIndex) / 2) + 1, rightIndex);
-			merge(array, leftIndex,(int) Math.ceil((leftIndex + rightIndex) / 2),rightIndex);
-		}
-	}
+   @Override
+   public void sort(T[] array, int leftIndex, int rightIndex) {
+      if (leftIndex >= rightIndex) {
+         return;
+      } else {
+         int middle = (int) Math.ceil((leftIndex + rightIndex) / 2);
+         sort(array, leftIndex, middle);
+         sort(array, middle + 1, rightIndex);
+         merge(array, leftIndex, rightIndex);
+      }
+   }
 
-	public void merge(T[] array, int left, int middle, int right) {
-		//primeira lista = left -> middle
-		//segunda lista = middle +1  -> right
-		int variavel_aux=  middle+1;
-		while (left < middle && variavel_aux < right) {
-			if(array[left].compareTo(array[variavel_aux]) > 0) {
-				Util.swap(array, i, j);
-			}
-		}
-	}
+   private void merge(T[] array, int left, int right) {
+      T[] lista = (T[]) new Comparable[right - left + 1];
+      int middle = (int) Math.ceil((left + right) / 2);
+      int inicio = left, fim = right;
+      int aux = middle + 1;
+      int indice = 0;
+      while (left <= middle && aux <= right) {
+         if (array[left].compareTo(array[aux]) >= 0) {
+            lista[indice++] = array[aux++];
+         } else if (array[left].compareTo(array[aux]) < 0) {
+            lista[indice++] = array[left++];
+         }
+      }
+      if (left > middle) {
+         while (aux <= right) {
+            lista[indice++] = array[aux++];
+         }
+      } else if (aux > right) {
+         while (left <= middle) {
+            lista[indice++] = array[left++];
+         }
+      }
+      indice = 0;
+      while (inicio <= fim) {
+         array[inicio++] = lista[indice++];
+      }
+   }
 }
