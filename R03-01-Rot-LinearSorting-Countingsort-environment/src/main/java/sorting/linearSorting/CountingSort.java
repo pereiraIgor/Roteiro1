@@ -1,7 +1,5 @@
 package sorting.linearSorting;
 
-import java.util.Arrays;
-
 import sorting.AbstractSorting;
 
 /**
