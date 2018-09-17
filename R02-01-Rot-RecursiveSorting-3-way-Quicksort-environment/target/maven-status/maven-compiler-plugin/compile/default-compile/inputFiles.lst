@@ -1,6 +1,6 @@
-/home/igorsp/eclipse-workspace/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/AbstractSorting.java
-/home/igorsp/eclipse-workspace/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/divideAndConquer/threeWayQuicksort/ThreeWayQuickSort.java
-/home/igorsp/eclipse-workspace/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/divideAndConquer/MergeSort.java
-/home/igorsp/eclipse-workspace/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/util/Util.java
-/home/igorsp/eclipse-workspace/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/divideAndConquer/QuickSort.java
-/home/igorsp/eclipse-workspace/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/Sorting.java
+/home/igor/roteiros/Roteiro1/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/divideAndConquer/QuickSort.java
+/home/igor/roteiros/Roteiro1/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/util/Util.java
+/home/igor/roteiros/Roteiro1/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/AbstractSorting.java
+/home/igor/roteiros/Roteiro1/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/divideAndConquer/MergeSort.java
+/home/igor/roteiros/Roteiro1/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/divideAndConquer/threeWayQuicksort/ThreeWayQuickSort.java
+/home/igor/roteiros/Roteiro1/R02-01-Rot-RecursiveSorting-3-way-Quicksort-environment/src/main/java/sorting/Sorting.java

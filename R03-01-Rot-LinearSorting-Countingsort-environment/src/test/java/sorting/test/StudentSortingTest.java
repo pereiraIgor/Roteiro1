@@ -18,16 +18,17 @@ public class StudentSortingTest {
 	private Integer[] vetorValoresRepetidos;
 	private Integer[] vetorValoresIguais;
 	private Integer[] vetorValoresImpates;
-
+	private Integer[] vetorValoresNegativos;
 	public AbstractSorting<Integer> implementation;
 
 	@Before
 	public void setUp() {
 		populaVetorTamanhoPar(new Integer[] { 30, 28, 7, 29, 11, 26, 4, 22, 23, 31 });
 		populaVetorTamanhoImpar(new Integer[] { 6, 41, 32, 7, 26, 4, 37, 49, 11, 18, 36 });
-		populaVetorRepetido(new Integer[] { 4, 9, 3, 4, 0, 5, 1, 4 });
+		populaVetorRepetido(new Integer[] { 4});
 		populaVetorIgual(new Integer[] { 6, 6, 6, 6, 6, 6 });
 		populaVetorComValoresNegaticos(new Integer[] { 1, 2, 3, 4, -1 });
+		populaVetorValoresNegativos(new Integer[] { -1,-4,-4,-3,-2,-7});
 		getImplementation();
 	}
 
@@ -62,7 +63,9 @@ public class StudentSortingTest {
 	public void populaVetorComValoresNegaticos(Integer[] arrayPadrao) {
 		this.vetorValoresImpates = Arrays.copyOf(arrayPadrao, arrayPadrao.length);
 	}
-
+	public void populaVetorValoresNegativos(Integer[] arrayPadrao) {
+		this.vetorValoresNegativos = Arrays.copyOf(arrayPadrao, arrayPadrao.length);
+	}
 	// FIM DOS METODOS AUXILIARES DA INICIALIZAÇÃO
 
 	// MÉTODOS DE TESTE
@@ -112,4 +115,9 @@ public class StudentSortingTest {
 	 * SEGUIR A ESTRUTURA DOS MÉTODOS DE TESTE ACIMA DESCRITOS, ORDENANDO APENAS UMA
 	 * PARTE DO ARRAY.
 	 */
+	@Test
+	public void testSort07() {
+		genericTest(vetorValoresNegativos);
+	}
+
 }

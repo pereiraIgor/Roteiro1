@@ -14,20 +14,21 @@ public class ExtendedCountingSort extends AbstractSorting<Integer> {
 
 	@Override
 	public void sort(Integer[] array, int leftIndex, int rightIndex) {
+		if(leftIndex < rightIndex) {
 		Integer maximunValue = array[leftIndex];
 		Integer minimumValue = array[leftIndex];
-
+		
 		for (int i = leftIndex; i <= rightIndex; i++) {
 			if (array[i] > maximunValue) {
 				maximunValue = array[i];
 			}
-			if (array[i] < maximunValue) {
+			if (array[i] < minimumValue) {
 				minimumValue = array[i];
 			}
 		}
 
 		int pivot = -1 * minimumValue;
-		int array_length = Math.abs(minimumValue) + Math.abs(maximunValue) + 1;
+		int array_length = maximunValue - minimumValue + 1;
 
 		Integer[] array_C = new Integer[array_length];
 		for (int i = 0; i < array_C.length; i++) {
@@ -40,6 +41,7 @@ public class ExtendedCountingSort extends AbstractSorting<Integer> {
 		for (int i = 1; i < array_C.length; i++) {
 			array_C[i] += array_C[i - 1];
 		}
+		
 		Integer[] array_B = new Integer[array.length];
 		for (int i = rightIndex; i >= leftIndex; i--) {
 			array_C[array[i] + pivot]--;
@@ -49,7 +51,7 @@ public class ExtendedCountingSort extends AbstractSorting<Integer> {
 			array[i] = array_B[i];
 		}
 		System.out.println(Arrays.toString(array));
-
+		}
 	}
 
 }
