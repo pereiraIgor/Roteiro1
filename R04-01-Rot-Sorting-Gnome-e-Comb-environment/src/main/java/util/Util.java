@@ -40,4 +40,7 @@ public class Util {
 		}
 		return result;
 	}
+	public static boolean verificaLimites(Object[] array, int i, int j) {
+		return i <= j && i >=0 && j < array.length && array.length > 0;
+	}
 }
