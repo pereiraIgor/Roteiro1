@@ -27,26 +27,27 @@ public class StudentQueueTest {
 		queue2.enqueue(1);
 		queue2.enqueue(2);
 
+		queue3.enqueue(2);
+
 	}
 
 	private void getImplementations() {
 		// TODO O aluno deve ajustar aqui para instanciar sua implementação
-		queue1 = new CircularQueue<>(4);
-		queue2 = new CircularQueue<>(2);
-		queue3 = new CircularQueue<>(10);
+		queue1 = new QueueImpl<>(4);
+		queue2 = new QueueImpl<>(2);
+		queue3 = new QueueImpl<>(10);
 	}
 
 	// MÉTODOS DE TESTE
 	@Test
 	public void testHead() {
-
 		assertEquals(new Integer(1), queue1.head());
 	}
 
 	@Test
 	public void testIsEmpty() {
 		assertFalse(queue1.isEmpty());
-		assertTrue(queue3.isEmpty());
+		assertFalse(queue3.isEmpty());
 	}
 
 	@Test
@@ -59,17 +60,17 @@ public class StudentQueueTest {
 		try {
 			queue1.enqueue(new Integer(5));
 		} catch (QueueOverflowException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	@Test(expected = QueueOverflowException.class)
 	public void testEnqueueComErro() throws QueueOverflowException {
-		queue2.enqueue(new Integer(5)); // vai depender do tamanho que a fila
+		queue1.enqueue(new Integer(10000));
+		queue1.enqueue(new Integer(5)); // vai depender do tamanho que a fila
 										// foi iniciada!!!
 	}
-
+	
 	@Test
 	public void testDequeue() {
 		try {
@@ -80,13 +81,54 @@ public class StudentQueueTest {
 		}
 	}
 
+	@Test
+	public void testaPegarHeadColocandoElemento() throws QueueUnderflowException {
+		queue3.dequeue();
+		assertEquals(queue3.head(), null);
+	}
 
-	
-	
 	@Test(expected = QueueUnderflowException.class)
 	public void testDequeueComErro() throws QueueUnderflowException {
-		assertEquals(new Integer(1), queue1.dequeue()); // vai depender do
-														// tamanho que a fial
-														// foi iniciada!!!
+		queue3.dequeue();
+		assertEquals(new Integer(2), queue3.dequeue());
+	}
+	@Test
+	public void testaQueue3() throws QueueOverflowException, QueueUnderflowException {
+		queue3.enqueue(new Integer(3));
+		queue3.enqueue(new Integer(4));
+		queue3.enqueue(new Integer(5));
+		queue3.enqueue(new Integer(6));
+		queue3.enqueue(new Integer(7));
+		queue3.enqueue(new Integer(8));
+		queue3.enqueue(new Integer(9));
+		queue3.enqueue(new Integer(10));
+		queue3.enqueue(new Integer(11));
+		queue3.dequeue();
+		queue3.dequeue();
+		assertEquals(queue3.head(), new Integer(4));
+	}
+	@Test(expected=QueueOverflowException.class)
+	public void testaQueue31() throws QueueOverflowException {
+		queue3.enqueue(new Integer(3));
+		queue3.enqueue(new Integer(4));
+		queue3.enqueue(new Integer(5));
+		queue3.enqueue(new Integer(6));
+		queue3.enqueue(new Integer(7));
+		queue3.enqueue(new Integer(8));
+		queue3.enqueue(new Integer(9));
+		queue3.enqueue(new Integer(10));
+		queue3.enqueue(new Integer(11));
+		queue3.enqueue(new Integer(12));
+		assertEquals(queue3.head(), new Integer(4));
+	}
+	@Test(expected=QueueUnderflowException.class)
+	public void testaQueue32() throws QueueOverflowException, QueueUnderflowException {
+		queue3.enqueue(new Integer(3));
+		queue3.enqueue(new Integer(4));
+		queue3.dequeue();
+		queue3.dequeue();
+		queue3.dequeue();
+		queue3.dequeue();
+		assertEquals(queue3.head(),null);
 	}
 }
