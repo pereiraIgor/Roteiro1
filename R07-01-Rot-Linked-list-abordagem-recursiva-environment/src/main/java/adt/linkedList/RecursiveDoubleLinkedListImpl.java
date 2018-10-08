@@ -19,12 +19,7 @@ public class RecursiveDoubleLinkedListImpl<T> extends
 
 	@Override
 	public void insert(T element) {
-		if (isEmpty()) {
-			data = element;
-			next = new RecursiveSingleLinkedListImpl<T>();
-		} else {
-			next.insert(element);
-		}
+		
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package adt.queue;
+package adt.queueDoubleLinkedList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,7 +8,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StudentQueueTest {
+import adt.queue.Queue;
+import adt.queue.QueueDoubleLinkedListImpl;
+import adt.queue.QueueOverflowException;
+import adt.queue.QueueUnderflowException;
+
+public class StudentQueueDoubleLinkedListTest {
 
 	public Queue<Integer> queue1;
 	public Queue<Integer> queue2;
@@ -33,9 +38,9 @@ public class StudentQueueTest {
 
 	private void getImplementations() {
 		// TODO O aluno deve ajustar aqui para instanciar sua implementação
-		queue1 = new QueueImpl<>(4);
-		queue2 = new QueueImpl<>(2);
-		queue3 = new QueueImpl<>(10);
+		queue1 = new QueueDoubleLinkedListImpl<>(4);
+		queue2 = new QueueDoubleLinkedListImpl<>(2);
+		queue3 = new QueueDoubleLinkedListImpl<>(10);
 	}
 
 	// MÉTODOS DE TESTE

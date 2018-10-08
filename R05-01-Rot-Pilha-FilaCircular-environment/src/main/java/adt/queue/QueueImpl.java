@@ -13,7 +13,11 @@ public class QueueImpl<T> implements Queue<T> {
 
    @Override
    public T head() {
-      return array[0];
+      T saida = null;
+      if (!isEmpty()) {
+         saida = array[0];
+      }
+      return saida;
    }
 
    @Override
@@ -23,7 +27,7 @@ public class QueueImpl<T> implements Queue<T> {
 
    @Override
    public boolean isFull() {
-      return tail == array.length;
+      return tail == array.length - 1;
    }
 
    private void shiftLeft() {
@@ -35,7 +39,9 @@ public class QueueImpl<T> implements Queue<T> {
    @Override
    public void enqueue(T element) throws QueueOverflowException {
       if (!isFull()) {
+
          array[++tail] = element;
+         //System.out.println(Arrays.toString(array) + " com tail em " + tail);
       } else {
          throw new QueueOverflowException();
       }
@@ -44,10 +50,13 @@ public class QueueImpl<T> implements Queue<T> {
 
    @Override
    public T dequeue() throws QueueUnderflowException {
-      T saida = array[0];
+      T saida = null;
       if (!isEmpty()) {
+         //System.out.println(Arrays.toString(array) + " com tail em " + tail + " e posicao inicial é  " + array[0]);
+         saida = array[0];
          tail--;
          shiftLeft();
+         //System.out.println(Arrays.toString(array));
       } else {
          throw new QueueUnderflowException();
       }
