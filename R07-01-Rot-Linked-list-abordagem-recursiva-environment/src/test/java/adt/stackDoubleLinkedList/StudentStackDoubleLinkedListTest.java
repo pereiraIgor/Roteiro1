@@ -2,15 +2,13 @@ package adt.stackDoubleLinkedList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import adt.linkedList.RecursiveDoubleLinkedListImpl;
 import adt.stack.Stack;
-import adt.stack.StackDoubleLinkedListImpl;
 import adt.stack.StackOverflowException;
+import adt.stack.StackRecursiveDoubleLinkedListImpl;
 import adt.stack.StackUnderflowException;
 
 public class StudentStackDoubleLinkedListTest {
@@ -37,9 +35,9 @@ public class StudentStackDoubleLinkedListTest {
 
 	private void getImplementations() {
 		// TODO O aluno deve ajustar aqui para instanciar sua implementação
-		stack1 = new StackDoubleLinkedListImpl<>(4);
-		stack2 = new StackDoubleLinkedListImpl<>(2);
-		stack3 = new StackDoubleLinkedListImpl<>(10);
+		stack1 = new StackRecursiveDoubleLinkedListImpl<>(4);
+		stack2 = new StackRecursiveDoubleLinkedListImpl<>(2);
+		stack3 = new StackRecursiveDoubleLinkedListImpl<>(10);
 	}
 
 	// MÉTODOS DE TESTE
@@ -87,10 +85,9 @@ public class StudentStackDoubleLinkedListTest {
 
 	@Test(expected = StackUnderflowException.class)
 	public void testPopComErro() throws StackUnderflowException {
+		System.out.println(stack1.pop());
 		stack1.pop();
-		stack1.pop();
-		stack1.pop();
-		assertEquals(new Integer(3), stack1.pop()); // levanta excecao apenas se
+		assertEquals(new Integer(1), stack1.pop()); // levanta excecao apenas se
 													// stack1 for vazia
 	}
 	@Test
