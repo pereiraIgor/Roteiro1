@@ -13,7 +13,7 @@ public class StudentTestHashtableClosedAddressMultiplicationMethod {
 
 	protected AbstractHashtableClosedAddress<Integer> table1;
 	protected AbstractHashtableClosedAddress<Integer> table2;
-
+	protected AbstractHashtableClosedAddress<Integer> table3;
 	protected final int PROPOSED_SIZE = 100;
 
 	@Before
@@ -30,6 +30,10 @@ public class StudentTestHashtableClosedAddressMultiplicationMethod {
 
 		table2 = new HashtableClosedAddressImpl<Integer>(PROPOSED_SIZE,
 				HashFunctionClosedAddressMethod.MULTIPLICATION);
+		
+		table3 = new HashtableClosedAddressImpl<Integer>(10,
+				HashFunctionClosedAddressMethod.DIVISION);
+
 	}
 
 	@Test
@@ -88,5 +92,5 @@ public class StudentTestHashtableClosedAddressMultiplicationMethod {
 	public void testSize() {
 		assertEquals(80, table1.size());
 	}
-
+	
 }

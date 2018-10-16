@@ -60,23 +60,29 @@ public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddres
 
 	@Override
 	public void insert(T element) {
-		seachForLinkedList(((HashFunctionClosedAddress<T>) hashFunction).hash(element));
-		((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).add(element);
-		
-		if (((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).size() > 1) {
-			COLLISIONS++;
+		if (element != null) {
+			int index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+			seachForLinkedList(index);
+			((LinkedList<T>) table[index]).add(element);
+			if (((LinkedList<T>) table[index]).size() > 1) {
+				COLLISIONS++;
+			}
+			elements++;
 		}
-		elements++;
+
 	}
 
 	@Override
 	public void remove(T element) {
-		seachForLinkedList(((HashFunctionClosedAddress<T>) hashFunction).hash(element));
-		if (((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).contains(element)) {
-			((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).remove(element);
-			elements--;
-			if (((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).size() == 1) {
-				COLLISIONS--;
+		if (element != null) {
+			int index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+			seachForLinkedList(index);
+			if (((LinkedList<T>) table[index]).contains(element)) {
+				((LinkedList<T>) table[index]).remove(element);
+				elements--;
+				if (((LinkedList<T>) table[index]).size() > 1) {
+					COLLISIONS--;
+				}
 			}
 		}
 	}
@@ -84,27 +90,32 @@ public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddres
 	@Override
 	public T search(T element) {
 		T retorno = null;
-		seachForLinkedList(((HashFunctionClosedAddress<T>) hashFunction).hash(element));
-		if (((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).contains(element)) {
-			int aux = ((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).indexOf(element);
-			retorno = ((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).get(aux);
+		if (element != null) {
+			int index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+			seachForLinkedList(index);
+			if (((LinkedList<T>) table[index]).contains(element)) {
+				int aux = ((LinkedList<T>) table[index]).indexOf(element);
+				retorno = ((LinkedList<T>) table[index]).get(aux);
+			}
 		}
 		return retorno;
 	}
 
 	@Override
 	public int indexOf(T element) {
-		int index = -1;
-		seachForLinkedList(((HashFunctionClosedAddress<T>) hashFunction).hash(element));
-		if(((LinkedList<T>) table[((HashFunctionClosedAddress<T>) hashFunction).hash(element)]).contains(element)) {
-			index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+		int auxIndex = -1;
+		if (element != null) {
+			int index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+			seachForLinkedList(index);
+			if (((LinkedList<T>) table[index]).contains(element)) {
+				auxIndex = index;
+			}
 		}
-		return index;
-	
-	
+		return auxIndex;
 	}
+
 	public void seachForLinkedList(int index) {
-		if(((LinkedList<T>) table[index]) == null) {
+		if (((LinkedList<T>) table[index]) == null) {
 			table[index] = new LinkedList<>();
 		}
 	}

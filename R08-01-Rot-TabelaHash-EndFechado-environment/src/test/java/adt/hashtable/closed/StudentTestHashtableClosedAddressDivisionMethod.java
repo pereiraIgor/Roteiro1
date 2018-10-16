@@ -20,7 +20,7 @@ public class StudentTestHashtableClosedAddressDivisionMethod {
 	public void setUp() throws Exception {
 		table1 = new HashtableClosedAddressImpl<Integer>(PROPOSED_SIZE,
 				HashFunctionClosedAddressMethod.DIVISION);
-
+		
 		Integer initialValue = 200;
 		int increment = 5;
 		while (initialValue < 600) {
@@ -85,4 +85,5 @@ public class StudentTestHashtableClosedAddressDivisionMethod {
 	public void testSize() {
 		assertEquals(80, table1.size());
 	}
+
 }
