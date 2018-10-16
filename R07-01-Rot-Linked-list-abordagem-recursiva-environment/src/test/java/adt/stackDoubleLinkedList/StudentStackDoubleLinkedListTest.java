@@ -72,7 +72,12 @@ public class StudentStackDoubleLinkedListTest {
 		stack2.push(new Integer(5)); // levanta excecao apenas se o tamanhonao
 										// permitir outra insercao
 	}
-
+	@Test(expected = StackUnderflowException.class)
+	public void testPopComErro() throws StackUnderflowException, StackOverflowException {
+		stack3.push(new Integer(5));
+		stack3.pop();
+		stack3.pop();
+	}
 	@Test
 	public void testPop() {
 		try {
@@ -80,45 +85,6 @@ public class StudentStackDoubleLinkedListTest {
 		} catch (StackUnderflowException e) {
 			
 			e.printStackTrace();
-		}
-	}
-
-	@Test(expected = StackUnderflowException.class)
-	public void testPopComErro() throws StackUnderflowException {
-		System.out.println(stack1.pop());
-		stack1.pop();
-		assertEquals(new Integer(1), stack1.pop()); // levanta excecao apenas se
-													// stack1 for vazia
-	}
-	@Test
-	public void testStack3() {
-		try {
-			stack3.push(new Integer(1));
-			stack3.push(new Integer(2));
-			stack3.push(new Integer(3));
-			stack3.push(new Integer(4));
-			stack3.push(new Integer(5));
-			stack3.push(new Integer(6));
-			stack3.push(new Integer(7));
-			stack3.push(new Integer(8));
-			stack3.push(new Integer(9));
-			stack3.push(new Integer(10));
-			stack3.pop();
-			stack3.push(new Integer(11));
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-		} catch (StackOverflowException e) {
-			e.printStackTrace();
-		}catch (StackUnderflowException e) {
-			 e.printStackTrace();
 		}
 	}
 }

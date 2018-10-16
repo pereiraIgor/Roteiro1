@@ -24,11 +24,10 @@ public class StackRecursiveDoubleLinkedListImpl<T> implements Stack<T> {
 
 	@Override
 	public T pop() throws StackUnderflowException {
-		
 		if (!isEmpty()) {
-			T saida = ((RecursiveDoubleLinkedListImpl<T>) top).getData();
+			T result = ((RecursiveDoubleLinkedListImpl<T>) top).getData();
 			top.removeFirst();
-			return saida;
+			return result;
 		} else {
 			throw new StackUnderflowException();
 		}

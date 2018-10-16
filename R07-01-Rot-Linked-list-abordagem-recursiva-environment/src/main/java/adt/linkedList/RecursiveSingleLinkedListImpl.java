@@ -31,14 +31,16 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 
 	@Override
 	public T search(T element) {
-		T result;
-		if(isEmpty()) {
-			result = null;
-		}else {
-			if(getData().equals(element)) {
-				result = getData();
-			}else {
-				result = next.search(element);
+		T result = null;
+		if (element != null) {
+			if (isEmpty()) {
+				result = null;
+			} else {
+				if (getData().equals(element)) {
+					result = getData();
+				} else {
+					result = next.search(element);
+				}
 			}
 		}
 		return result;
@@ -46,22 +48,29 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 
 	@Override
 	public void insert(T element) {
-		if (isEmpty()) {
-			data = element;
-			next = new RecursiveSingleLinkedListImpl<T>();
-		} else {
-			next.insert(element);
+		if (element != null) {
+			if (isEmpty()) {
+				data = element;
+				next = new RecursiveSingleLinkedListImpl<T>();
+			} else {
+				next.insert(element);
+			}
 		}
 	}
 
 	@Override
 	public void remove(T element) {
-		if(!getData().equals(element)) {
-			next.remove(element);
-		}else {
-			data = next.getData();
-			next = next.next;
+		if (element != null) {
+			if (!isEmpty()) {
+				if (!getData().equals(element)) {
+					next.remove(element);
+				} else {
+					data = next.getData();
+					next = next.next;
+				}
+			}
 		}
+
 	}
 
 	@Override
@@ -70,13 +79,14 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 		toArray(result, 0);
 		return result;
 	}
-	
+
 	public void toArray(T[] array, int i) {
-		if(!isEmpty()) {
+		if (!isEmpty()) {
 			array[i] = data;
-			next.toArray(array,i+1);
+			next.toArray(array, i + 1);
 		}
 	}
+
 	public T getData() {
 		return data;
 	}
