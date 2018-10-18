@@ -1,4 +1,7 @@
+
 package adt.hashtable.closed;
+
+import util.Util;
 
 import java.util.LinkedList;
 
@@ -6,7 +9,6 @@ import adt.hashtable.hashfunction.HashFunction;
 import adt.hashtable.hashfunction.HashFunctionClosedAddress;
 import adt.hashtable.hashfunction.HashFunctionClosedAddressMethod;
 import adt.hashtable.hashfunction.HashFunctionFactory;
-import util.Util;
 
 public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddress<T> {
 
@@ -35,10 +37,9 @@ public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddres
 		int realSize = desiredSize;
 
 		if (method == HashFunctionClosedAddressMethod.DIVISION) {
-			realSize = this.getPrimeAbove(desiredSize);
-			// real size must the
-			// the immediate prime
-			// above
+			realSize = this.getPrimeAbove(desiredSize); // real size must the
+														// the immediate prime
+														// above
 		}
 		initiateInternalTable(realSize);
 		HashFunction function = HashFunctionFactory.createHashFunction(method, realSize);
@@ -52,7 +53,7 @@ public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddres
 	 * Util.isPrime to check if a number is prime.
 	 */
 	int getPrimeAbove(int number) {
-		if (!Util.isPrime(number)) {
+		while (!Util.isPrime(number)) {
 			number++;
 		}
 		return number;
@@ -60,26 +61,63 @@ public class HashtableClosedAddressImpl<T> extends AbstractHashtableClosedAddres
 
 	@Override
 	public void insert(T element) {
-		((LinkedList<T>)table).add();
-		((HashFunctionClosedAddress<T> table);
+		if (element != null) {
+			int index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+			seachForLinkedList(index);
+			((LinkedList<T>) table[index]).add(element);
+			if (((LinkedList<T>) table[index]).size() > 1) {
+				COLLISIONS++;
+			}
+			elements++;
+		}
+
 	}
 
 	@Override
 	public void remove(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if (element != null) {
+			int index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+			seachForLinkedList(index);
+			if (((LinkedList<T>) table[index]).contains(element)) {
+				((LinkedList<T>) table[index]).remove(element);
+				elements--;
+				if (((LinkedList<T>) table[index]).size() > 1) {
+					COLLISIONS--;
+				}
+			}
+		}
 	}
 
 	@Override
 	public T search(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T retorno = null;
+		if (element != null) {
+			int index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+			seachForLinkedList(index);
+			if (((LinkedList<T>) table[index]).contains(element)) {
+				int aux = ((LinkedList<T>) table[index]).indexOf(element);
+				retorno = ((LinkedList<T>) table[index]).get(aux);
+			}
+		}
+		return retorno;
 	}
 
 	@Override
 	public int indexOf(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		int auxIndex = -1;
+		if (element != null) {
+			int index = ((HashFunctionClosedAddress<T>) hashFunction).hash(element);
+			seachForLinkedList(index);
+			if (((LinkedList<T>) table[index]).contains(element)) {
+				auxIndex = index;
+			}
+		}
+		return auxIndex;
 	}
 
+	public void seachForLinkedList(int index) {
+		if (((LinkedList<T>) table[index]) == null) {
+			table[index] = new LinkedList<>();
+		}
+	}
 }

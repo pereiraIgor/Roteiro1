@@ -2,15 +2,13 @@ package adt.stackDoubleLinkedList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import adt.linkedList.RecursiveDoubleLinkedListImpl;
 import adt.stack.Stack;
-import adt.stack.StackDoubleLinkedListImpl;
 import adt.stack.StackOverflowException;
+import adt.stack.StackRecursiveDoubleLinkedListImpl;
 import adt.stack.StackUnderflowException;
 
 public class StudentStackDoubleLinkedListTest {
@@ -37,9 +35,9 @@ public class StudentStackDoubleLinkedListTest {
 
 	private void getImplementations() {
 		// TODO O aluno deve ajustar aqui para instanciar sua implementação
-		stack1 = new StackDoubleLinkedListImpl<>(4);
-		stack2 = new StackDoubleLinkedListImpl<>(2);
-		stack3 = new StackDoubleLinkedListImpl<>(10);
+		stack1 = new StackRecursiveDoubleLinkedListImpl<>(4);
+		stack2 = new StackRecursiveDoubleLinkedListImpl<>(2);
+		stack3 = new StackRecursiveDoubleLinkedListImpl<>(10);
 	}
 
 	// MÉTODOS DE TESTE
@@ -74,7 +72,12 @@ public class StudentStackDoubleLinkedListTest {
 		stack2.push(new Integer(5)); // levanta excecao apenas se o tamanhonao
 										// permitir outra insercao
 	}
-
+	@Test(expected = StackUnderflowException.class)
+	public void testPopComErro() throws StackUnderflowException, StackOverflowException {
+		stack3.push(new Integer(5));
+		stack3.pop();
+		stack3.pop();
+	}
 	@Test
 	public void testPop() {
 		try {
@@ -82,46 +85,6 @@ public class StudentStackDoubleLinkedListTest {
 		} catch (StackUnderflowException e) {
 			
 			e.printStackTrace();
-		}
-	}
-
-	@Test(expected = StackUnderflowException.class)
-	public void testPopComErro() throws StackUnderflowException {
-		stack1.pop();
-		stack1.pop();
-		stack1.pop();
-		assertEquals(new Integer(3), stack1.pop()); // levanta excecao apenas se
-													// stack1 for vazia
-	}
-	@Test
-	public void testStack3() {
-		try {
-			stack3.push(new Integer(1));
-			stack3.push(new Integer(2));
-			stack3.push(new Integer(3));
-			stack3.push(new Integer(4));
-			stack3.push(new Integer(5));
-			stack3.push(new Integer(6));
-			stack3.push(new Integer(7));
-			stack3.push(new Integer(8));
-			stack3.push(new Integer(9));
-			stack3.push(new Integer(10));
-			stack3.pop();
-			stack3.push(new Integer(11));
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-			stack3.pop();
-		} catch (StackOverflowException e) {
-			e.printStackTrace();
-		}catch (StackUnderflowException e) {
-			 e.printStackTrace();
 		}
 	}
 }

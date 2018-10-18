@@ -71,6 +71,7 @@ public class DoubleLinkedListImpl<T> extends SingleLinkedListImpl<T> implements 
 		newHead.setNext((DoubleLinkedListNode<T>) head);
 		newHead.setPrevious(new DoubleLinkedListNode<>());
 		newHead.getPrevious().setNext(head);
+		
 		((DoubleLinkedListNode<T>) head).setPrevious(newHead);
 
 		if (((DoubleLinkedListNode<T>) head).isNIL()) {
