@@ -14,36 +14,64 @@ public class HashtableOpenAddressQuadraticProbingImpl<T extends Storable> extend
 
 	@Override
 	public void insert(T element) {
-		int probe = 0;
-		int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
-		while (table[index] != null && probe < table.length) {
-			index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
-			COLLISIONS++;
-		}
-		if (probe < table.length) {
-			table[index] = element;
-			elements++;
+		if (element != null) {
+			int probe = 0;
+			int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
+			while (table[index] != null && probe < table.length) {
+				index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+				COLLISIONS++;
+			}
+			if (table[index] == null) {
+				table[index] = element;
+				elements++;
+			}
 		}
 	}
 
 	@Override
 	public void remove(T element) {
-		int probe = 0;
-		int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
-		while(table[index] != null && !table[index].equals(element) && probe < table.length) {
-			index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+		if (element != null) {
+			int probe = 0;
+			int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
+			while (table[index] != null && !table[index].equals(element) && probe < table.length) {
+				index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+			}
+			if (table[index] != null && table[index].equals(element) && probe < table.length) {
+				table[index] = deletedElement;
+				elements--;
+			}
 		}
 	}
 
 	@Override
 	public T search(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		T retorno = null;
+		if (element != null) {
+			int probe = 0;
+			int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
+			while (table[index] != null && !table[index].equals(element) && probe < table.length) {
+				index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+			}
+			if (table[index] != null && table[index].equals(element) && probe < table.length) {
+				retorno = (T) table[index];
+			}
+		}
+		return retorno;
 	}
 
 	@Override
 	public int indexOf(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		int indice = -1;
+		if (element != null) {
+			int probe = 0;
+			int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
+			while (table[index] != null && !table[index].equals(element) && probe < table.length) {
+				index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+			}
+			if (table[index] != null && table[index].equals(element) && probe < table.length) {
+				indice = index;
+			}
+		}
+		return indice;
 	}
 }
