@@ -14,42 +14,48 @@ public class HashtableOpenAddressLinearProbingImpl<T extends Storable> extends A
 
 	@Override
 	public void insert(T element) {
-		int probe = 0;
-		int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
-		while (table[index] != null && probe < table.length) {
-			index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
-			COLLISIONS++;
-		}
-		if (table[index] == null) {
-			table[index] = element;
-			elements++;
+		if (element != null) {
+			int probe = 0;
+			int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
+			while (table[index] != null && probe < table.length) {
+				index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+				COLLISIONS++;
+			}
+			if (table[index] == null && probe < table.length) {
+				table[index] = element;
+				elements++;
+			}
 		}
 	}
 
 	@Override
 	public void remove(T element) {
-		int probe = 0;
-		int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
-		while (table[index] != null && !table[index].equals(element) && probe < table.length) {
-			index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
-		}
-		if (table[index] != null && table[index].equals(element)) {
-			table[index] = deletedElement;
-			elements--;
+		if (element != null) {
+			int probe = 0;
+			int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
+			while (table[index] != null && !table[index].equals(element) && probe < table.length) {
+				index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+			}
+			if (table[index] != null && table[index].equals(element)) {
+				table[index] = deletedElement;
+				elements--;
+			}
 		}
 	}
 
 	@Override
 	public T search(T element) {
 		T retorno = null;
-		int probe = 0;
-		int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
-		while (table[index] != null && !table[index].equals(element) && probe < table.length) {
-			index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
-		}
+		if (element != null) {
+			int probe = 0;
+			int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
+			while (table[index] != null && !table[index].equals(element) && probe < table.length) {
+				index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+			}
+			if (table[index] != null && table[index].equals(element)) {
+				retorno = (T) table[index];
+			}
 
-		if (table[index] != null && table[index].equals(element)) {
-			retorno = (T) table[index];
 		}
 		return retorno;
 	}
@@ -57,13 +63,16 @@ public class HashtableOpenAddressLinearProbingImpl<T extends Storable> extends A
 	@Override
 	public int indexOf(T element) {
 		int indice = -1;
-		int probe = 0;
-		int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
-		while (!table[index].equals(element) && probe < table.length && table[index] != null) {
-			index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
-		}
-		if (table[index].equals(element)) {
-			indice = index;
+		if (element != null) {
+			int probe = 0;
+			int index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, probe);
+			while (!table[index].equals(element) && probe < table.length && table[index] != null) {
+				index = ((HashFunctionOpenAddress<T>) hashFunction).hash(element, ++probe);
+			}
+			if (table[index].equals(element)) {
+				indice = index;
+			}
+
 		}
 		return indice;
 
