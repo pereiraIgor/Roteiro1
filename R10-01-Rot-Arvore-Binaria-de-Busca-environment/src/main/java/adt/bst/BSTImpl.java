@@ -20,11 +20,12 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	@Override
 	public int height() {
 		int altura = 0;
-		if (isEmpty()) {
-			altura = 0;
-		} else {
-
-		}
+		return altura;
+//		if (isEmpty()) {
+//			altura = 0;
+//		} else {
+//
+//		}
 	}
 
 	@Override
@@ -100,20 +101,95 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public BSTNode<T> sucessor(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> aux = search(element);
+		if (!aux.getRight().isEmpty()) {
+			return minimum((BSTNode<T>) aux.getRight());
+		}
+		BSTNode<T> y = (BSTNode<T>) aux.getParent();
+		while (!y.isEmpty() && aux.equals((BSTNode<T>) y.getRight())) {
+			aux = y;
+			y = (BSTNode<T>) y.getParent();
+		}
+		return y;
+
 	}
 
 	@Override
 	public BSTNode<T> predecessor(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> aux = search(element);
+		if (!aux.getLeft().isEmpty()) {
+			return maximum((BSTNode<T>) aux.getLeft());
+		}
+		BSTNode<T> y = (BSTNode<T>) aux.getParent();
+		while (!y.isEmpty() && aux.equals((BSTNode<T>) y.getLeft())) {
+			aux = y;
+			y = (BSTNode<T>) y.getParent();
+		}
+		return y;
 	}
 
 	@Override
 	public void remove(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> node = search(element);
+		if (!node.isEmpty()) {
+			if (nodeIsLeaf(node)) {
+				node.setData(null);
+				node.setLeft(null);
+				node.setRight(null);
+			} else if (nodeHasOneChild(node) == 1 || nodeHasOneChild(node) == 2) {
+				if (!node.equals(root)) {
+					if (nodeHasOneChild((BSTNode<T>) node.getParent()) == 2) {
+						if(!node.getLeft().isEmpty()) {
+							node.getParent().setLeft(node.getLeft());
+						}else {
+							node.getParent().setLeft(node.getRight());
+						}
+						
+						//node is tight
+					}else{
+						if(!node.getLeft().isEmpty()){
+							node.getParent().setRight(node.getLeft());
+						}else {
+							node.getParent().setRight(node.getRight());
+						}
+					}
+				}else {
+					if(nodeHasOneChild(node) == 1) {
+						root = (BSTNode<T>)root.getRight();
+					}else {
+						root = (BSTNode<T>)root.getLeft();
+					}
+					
+				}
+			}else {
+				BSTNode<T> successor = sucessor(node.getData());
+				node.setData(successor.getData());
+				remove(successor.getData());
+			}
+		}
+	}
+
+	private boolean nodeIsLeaf(BSTNode<T> node) {
+		if (node.getLeft().isEmpty() && node.getRight().isEmpty()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private int nodeHasOneChild(BSTNode<T> node) {
+		// se for 1 é o da direita e se for 2 é o da esquerda
+		int valor = 0;
+		if (node.getLeft().getData() != null && node.getRight().getData() == null) {
+			valor = 2;
+		} else if (node.getLeft().getData() == null && node.getRight().getData() != null) {
+			valor = 1;
+		} else if (node.getLeft().getData() != null && node.getRight().getData() != null) {
+			valor = 0;
+		} else {
+			valor = 3;
+		}
+		return valor;
 	}
 
 	// root left right
