@@ -24,7 +24,13 @@ public class StudentBSTTest {
 	public void setUp() {
 		tree = new BSTImpl<>();
 	}
-
+	
+	@Test
+	public void testa() {
+		fillTree();
+		tree.remove(6);
+	}
+	
 	@Test
 	public void testInit() {
 		assertTrue(tree.isEmpty());

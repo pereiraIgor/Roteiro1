@@ -1,5 +1,7 @@
 package adt.bst;
 
+import java.util.ArrayList;
+
 public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	protected BSTNode<T> root;
@@ -132,51 +134,42 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	public void remove(T element) {
 		BSTNode<T> node = search(element);
 		if (!node.isEmpty()) {
-			if (nodeIsLeaf(node)) {
+			if (node.isLeaf()) {
 				node.setData(null);
 				node.setLeft(null);
 				node.setRight(null);
 			} else if (nodeHasOneChild(node) == 1 || nodeHasOneChild(node) == 2) {
 				if (!node.equals(root)) {
 					if (nodeHasOneChild((BSTNode<T>) node.getParent()) == 2) {
-						if(!node.getLeft().isEmpty()) {
+						if (!node.getLeft().isEmpty()) {
 							node.getParent().setLeft(node.getLeft());
-						}else {
+						} else {
 							node.getParent().setLeft(node.getRight());
 						}
-						
-						//node is tight
-					}else{
-						if(!node.getLeft().isEmpty()){
+
+						// node is tight
+					} else {
+						if (!node.getLeft().isEmpty()) {
 							node.getParent().setRight(node.getLeft());
-						}else {
+						} else {
 							node.getParent().setRight(node.getRight());
 						}
 					}
-				}else {
-					if(nodeHasOneChild(node) == 1) {
-						root = (BSTNode<T>)root.getRight();
-					}else {
-						root = (BSTNode<T>)root.getLeft();
+				} else {
+					if (nodeHasOneChild(node) == 1) {
+						root = (BSTNode<T>) root.getRight();
+					} else {
+						root = (BSTNode<T>) root.getLeft();
 					}
-					
+
 				}
-			}else {
+			} else {
 				BSTNode<T> successor = sucessor(node.getData());
 				node.setData(successor.getData());
 				remove(successor.getData());
 			}
 		}
 	}
-
-	private boolean nodeIsLeaf(BSTNode<T> node) {
-		if (node.getLeft().isEmpty() && node.getRight().isEmpty()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	private int nodeHasOneChild(BSTNode<T> node) {
 		// se for 1 é o da direita e se for 2 é o da esquerda
 		int valor = 0;
@@ -195,8 +188,21 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	// root left right
 	@Override
 	public T[] preOrder() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		ArrayList<Comparable> array = new ArrayList<>();
+		preOrder(root,array);
+		return (T[]) array.toArray();
+	}
+
+	private void preOrder(BSTNode<T> node, ArrayList<Comparable> array) {
+		if (!node.isEmpty()) {
+			array.add(visit(node));
+			preOrder((BSTNode<T>) node.getLeft(),array);
+			preOrder((BSTNode<T>) node.getRight(),array);
+		}
+	}
+
+	private T visit(BSTNode<T> node) {
+		return node.getData();
 	}
 
 	// left root right
