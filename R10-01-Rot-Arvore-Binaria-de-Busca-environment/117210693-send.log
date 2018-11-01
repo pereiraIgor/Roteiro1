@@ -87,3 +87,13 @@
   <level>FINE</level>
   <message>File 117210693-IGOR DE SOUSA PEREIRA.zip was received. It was sent by IGOR DE SOUSA PEREIRA from IP 192.168.0.100</message>
 </record>
+</log>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2018-11-01T15:29:06.386-0300</date>
+  <logger>IGOR DE SOUSA PEREIRA</logger>
+  <level>FINE</level>
+  <message>File 117210693-IGOR DE SOUSA PEREIRA.zip was received. It was sent by IGOR DE SOUSA PEREIRA from IP 150.165.42.195</message>
+</record>
