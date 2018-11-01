@@ -191,15 +191,18 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				} else {
 					if (!node.getRight().isEmpty()) {
 						root = (BSTNode<T>) root.getRight();
+						root.setParent(null);
 					} else {
 						root = (BSTNode<T>) root.getLeft();
+						root.setParent(null);
 					}
 
 				}
 			} else {
 				BSTNode<T> successor = sucessor(node.getData());
-				remove(successor);
 				node.setData(successor.getData());
+				remove(successor);
+				
 			}
 		}
 
