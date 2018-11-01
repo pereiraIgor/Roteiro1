@@ -48,7 +48,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				} else {
 					saida = search((BSTNode<T>) node.getLeft(), element);
 				}
-			} else{
+			} else {
 				saida = node;
 			}
 		}
@@ -202,7 +202,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				BSTNode<T> successor = sucessor(node.getData());
 				node.setData(successor.getData());
 				remove(successor);
-				
+
 			}
 		}
 
