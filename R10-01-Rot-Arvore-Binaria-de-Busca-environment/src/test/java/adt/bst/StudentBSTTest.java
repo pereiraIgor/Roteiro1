@@ -2,6 +2,8 @@ package adt.bst;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,13 +26,24 @@ public class StudentBSTTest {
 	public void setUp() {
 		tree = new BSTImpl<>();
 	}
-	
+
 	@Test
 	public void testa() {
-		fillTree();
+		tree.insert(5);
+		tree.insert(4);
+		tree.insert(3);
+		tree.insert(2);
+		tree.insert(1);
+		tree.insert(6);
+		tree.insert(7);
+		tree.insert(8);
+		tree.insert(9);
+		tree.remove(5);
 		tree.remove(6);
+
+		System.out.println(Arrays.toString(tree.order()));
 	}
-	
+
 	@Test
 	public void testInit() {
 		assertTrue(tree.isEmpty());
@@ -117,8 +130,7 @@ public class StudentBSTTest {
 	public void testHeight() {
 		fillTree(); // -40 -34 0 2 5 6 9 12 23 67 76 232
 
-		Integer[] preOrder = new Integer[] { 6, -34, -40, 5, 2, 0, 23, 9, 12,
-				76, 67, 232 };
+		Integer[] preOrder = new Integer[] { 6, -34, -40, 5, 2, 0, 23, 9, 12, 76, 67, 232 };
 		assertArrayEquals(preOrder, tree.preOrder());
 		assertEquals(4, tree.height());
 
