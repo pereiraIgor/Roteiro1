@@ -123,7 +123,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				aux = minimum((BSTNode<T>) aux.getRight());
 			} else {
 				BSTNode<T> parent = (BSTNode<T>) aux.getParent();
-				while (parent != null && aux.equals((BSTNode<T>) parent.getRight())) {
+				while (parent != null && aux == parent.getRight()) {
 					aux = parent;
 					parent = (BSTNode<T>) parent.getParent();
 				}
@@ -144,7 +144,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				aux = maximum((BSTNode<T>) aux.getLeft());
 			} else {
 				BSTNode<T> parent = (BSTNode<T>) aux.getParent();
-				while (parent != null && aux.equals((BSTNode<T>) parent.getLeft())) {
+				while (parent != null && aux == parent.getLeft()) {
 					aux = parent;
 					parent = (BSTNode<T>) parent.getParent();
 				}
@@ -171,7 +171,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				node.setRight(null);
 			} else if (nodeHasOneChild(node)) {
 				if (node != getRoot()) {
-					if (node.getParent().getLeft().equals(node)) {
+					if (node.getParent().getLeft() == node) {
 						if (!node.getLeft().isEmpty()) {
 							node.getParent().setLeft(node.getLeft());
 							node.getLeft().setParent(node.getParent());

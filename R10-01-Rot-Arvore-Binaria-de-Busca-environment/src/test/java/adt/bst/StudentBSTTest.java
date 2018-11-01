@@ -38,9 +38,7 @@ public class StudentBSTTest {
 		tree.insert(7);
 		tree.insert(8);
 		tree.insert(9);
-		//System.out.println(tree.getRoot());
 		tree.remove(5);
-		System.out.println(Arrays.toString(tree.order()));System.out.println(Arrays.toString(tree.postOrder()));
 	}
 
 	@Test
