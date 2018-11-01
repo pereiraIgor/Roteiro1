@@ -48,7 +48,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				} else {
 					saida = search((BSTNode<T>) node.getLeft(), element);
 				}
-			} else if (!node.isEmpty() && node.getData().equals(element)) {
+			} else{
 				saida = node;
 			}
 		}
@@ -179,13 +179,13 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 							node.getParent().setLeft(node.getRight());
 							node.getRight().setParent(node.getParent());
 						}
-					} else if (node.getParent().getRight().equals(node)) {
+					} else {
 						if (!node.getLeft().isEmpty()) {
 							node.getParent().setRight(node.getLeft());
 							node.getLeft().setParent(node.getParent());
 						} else {
 							node.getParent().setRight(node.getRight());
-							node.getParent().setParent(node.getParent());
+							node.getRight().setParent(node.getParent());
 						}
 					}
 				} else {
