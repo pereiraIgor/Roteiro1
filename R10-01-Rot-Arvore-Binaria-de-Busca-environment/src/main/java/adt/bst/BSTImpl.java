@@ -191,10 +191,10 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				} else {
 					if (!node.getRight().isEmpty()) {
 						root = (BSTNode<T>) root.getRight();
-						root.setParent(null);
+
 					} else {
 						root = (BSTNode<T>) root.getLeft();
-						root.setParent(null);
+
 					}
 
 				}
@@ -202,7 +202,6 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 				BSTNode<T> successor = sucessor(node.getData());
 				node.setData(successor.getData());
 				remove(successor);
-				
 			}
 		}
 
@@ -229,14 +228,10 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	private void preOrder(BSTNode<T> node, ArrayList<Comparable> array) {
 		if (!node.isEmpty()) {
-			array.add(visit(node));
+			array.add(node.getData());
 			preOrder((BSTNode<T>) node.getLeft(), array);
 			preOrder((BSTNode<T>) node.getRight(), array);
 		}
-	}
-
-	private T visit(BSTNode<T> node) {
-		return node.getData();
 	}
 
 	// left root right
@@ -251,7 +246,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	private void order(BSTNode<T> node, ArrayList<Comparable> array) {
 		if (!node.isEmpty()) {
 			order((BSTNode<T>) node.getLeft(), array);
-			array.add(visit(node));
+			array.add(node.getData());
 			order((BSTNode<T>) node.getRight(), array);
 		}
 	}
@@ -268,7 +263,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 		if (!node.isEmpty()) {
 			order((BSTNode<T>) node.getLeft(), array);
 			order((BSTNode<T>) node.getRight(), array);
-			array.add(visit(node));
+			array.add(node.getData());
 		}
 
 	}
