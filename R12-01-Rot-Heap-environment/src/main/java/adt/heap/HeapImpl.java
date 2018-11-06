@@ -85,19 +85,18 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 	private void heapify(int position) {
 		int left = left(position);
 		int right = right(position);
-		
-		//TROCA AQUIIIII
-		
-		if (left <= index && right <= index) {
-			if (comparator.compare(heap[left], heap[right]) > 0 && comparator.compare(heap[left], heap[position]) > 0) {
-				Util.swap(heap, left, position);
-				heapify(left);
-			} else if (comparator.compare(heap[left], heap[right]) < 0
-					&& comparator.compare(heap[right], heap[position]) > 0) {
-				Util.swap(heap, right, position);
-				heapify(right);
-			}
+		int largest = position;
+		if (left < size() && comparator.compare(heap[left], heap[position]) > 0) {
+			largest = left;
 		}
+		if (right < size() && comparator.compare(heap[right], heap[largest]) > 0) {
+			largest = right;
+		}
+		if (largest != position) {
+			Util.swap(heap, position, largest);
+			heapify(largest);
+		}
+
 	}
 
 	@Override
@@ -107,11 +106,8 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 			heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
 		}
 		index++;
-		heap[index] = element;
-		// int parent = parent(index);
 		int auxIndex = index;
-
-		while (auxIndex > 0 && comparator.compare(heap[parent(auxIndex)], element) < 0) {
+		while (auxIndex > 0 && parent(auxIndex) >= 0 && comparator.compare(heap[parent(auxIndex)], element) < 0) {
 			heap[auxIndex] = heap[parent(auxIndex)];
 			auxIndex = parent(auxIndex);
 		}
@@ -120,21 +116,23 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
 	@Override
 	public void buildHeap(T[] array) {
-		int middle = (int) Math.floor(array.length / 2);
-		for (int i = middle; i >= 1; i--) {
+		heap = array;
+		index = array.length - 1;
+		int middle = (int) Math.floor(heap.length / 2);
+		for (int i = middle; i >= 0; i--) {
 			heapify(i);
 		}
 	}
 
 	@Override
 	public T extractRootElement() {
-		T elementToReturn = null;
-		if (size() >= 0) {
-			Util.swap(heap, 0, index);
-			elementToReturn = heap[index];
-			heap[index--] = null;
-			heapify(0);
+		if (isEmpty()) {
+			return null;
 		}
+		T elementToReturn = heap[0];
+		heap[0] = heap[index];
+		heap[index--] = null;
+		heapify(0);
 		return elementToReturn;
 	}
 
@@ -150,14 +148,49 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
 	@Override
 	public T[] heapsort(T[] array) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if (size() > 1) {
+			boolean isMax = heap[0].compareTo(heap[1]) > 0;
+			System.out.println("inicio foi");
+			if (isMax) {
+				System.out.println("aqui");
+				heap = array;
+				index = array.length - 1;
+				for (int i = array.length - 1; i > 0; i--) {
+					
+					Util.swap(array, i, 0);
+					index--;
+					heapify(0);
+				}
+			} else {
+				System.out.println("TNCCCCC");
+				while (!isEmpty()) {
+					extractRootElement();
+				}
+				for (int i = 0; i < array.length; i++) {
+					insertMin(array[i]);
+				}
+			}
+		}
+		return heap;
+	}
+
+	private void insertMin(T element) {
+		// ESSE CODIGO E PARA A HEAP CRESCER SE FOR PRECISO. NAO MODIFIQUE
+		if (index == heap.length - 1) {
+			heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
+		}
+		index++;
+		int auxIndex = index;
+		while (auxIndex > 0 && parent(auxIndex) >= 0 && heap[parent(auxIndex)].compareTo(element) < 0) {
+			heap[auxIndex] = heap[parent(auxIndex)];
+			auxIndex = parent(auxIndex);
+		}
+		heap[auxIndex] = element;
 	}
 
 	@Override
 	public int size() {
 		return index + 1;
-
 	}
 
 	public Comparator<T> getComparator() {
