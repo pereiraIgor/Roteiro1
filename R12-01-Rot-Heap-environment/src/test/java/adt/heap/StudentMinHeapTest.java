@@ -74,7 +74,6 @@ public class StudentMinHeapTest {
 
 		assertEquals(5, heap.size());
 		assertFalse(heap.isEmpty());
-		System.out.println(Arrays.toString(heap.toArray()));
 		verifyHeap(new Integer[] { 38, 40, 79, 45, 53 });
 	}
 

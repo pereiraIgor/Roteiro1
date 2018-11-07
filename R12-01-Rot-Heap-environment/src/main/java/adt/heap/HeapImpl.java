@@ -105,19 +105,21 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 		if (index == heap.length - 1) {
 			heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
 		}
-		index++;
-		int auxIndex = index;
-		while (auxIndex > 0 && parent(auxIndex) >= 0 && comparator.compare(heap[parent(auxIndex)], element) < 0) {
-			heap[auxIndex] = heap[parent(auxIndex)];
-			auxIndex = parent(auxIndex);
+		if (element != null) {
+			index++;
+			int auxIndex = index;
+			while (auxIndex > 0 && parent(auxIndex) >= 0 && comparator.compare(heap[parent(auxIndex)], element) < 0) {
+				heap[auxIndex] = heap[parent(auxIndex)];
+				auxIndex = parent(auxIndex);
+			}
+			heap[auxIndex] = element;
 		}
-		heap[auxIndex] = element;
 	}
 
 	@Override
 	public void buildHeap(T[] array) {
-		heap = array;
-		index = array.length - 1;
+		cleanHeap();
+		insertCleanArray(array);
 		int middle = (int) Math.floor(heap.length / 2);
 		for (int i = middle; i >= 0; i--) {
 			heapify(i);
@@ -126,66 +128,61 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
 	@Override
 	public T extractRootElement() {
-		if (isEmpty()) {
-			return null;
+		T toReturn = null;
+		if (!isEmpty()) {
+			toReturn = heap[0];
+			heap[0] = heap[index];
+			heap[index--] = null;
+			heapify(0);
 		}
-		T elementToReturn = heap[0];
-		heap[0] = heap[index];
-		heap[index--] = null;
-		heapify(0);
-		return elementToReturn;
+		return toReturn;
 	}
 
 	@Override
 	public T rootElement() {
+		T toReturn = null;
 		if (index >= 0) {
-			return heap[0];
-		} else {
-			return null;
+			toReturn = heap[0];
 		}
+		return toReturn;
 
 	}
 
 	@Override
 	public T[] heapsort(T[] array) {
+		T[] arraySaida = (T[]) (new Comparable[array.length]);
+		cleanHeap();
+		buildHeap(array);
 		if (size() > 1) {
 			boolean isMax = heap[0].compareTo(heap[1]) > 0;
-			System.out.println("inicio foi");
 			if (isMax) {
-				System.out.println("aqui");
-				heap = array;
-				index = array.length - 1;
-				for (int i = array.length - 1; i > 0; i--) {
-					
-					Util.swap(array, i, 0);
-					index--;
-					heapify(0);
+				int arraySaidaIndex = index;
+				while (!isEmpty()) {
+					arraySaida[arraySaidaIndex--] = extractRootElement();
 				}
 			} else {
-				System.out.println("TNCCCCC");
+				int arraySaidaIndex = 0;
 				while (!isEmpty()) {
-					extractRootElement();
-				}
-				for (int i = 0; i < array.length; i++) {
-					insertMin(array[i]);
+					arraySaida[arraySaidaIndex++] = extractRootElement();
 				}
 			}
 		}
-		return heap;
+		return arraySaida;
 	}
 
-	private void insertMin(T element) {
-		// ESSE CODIGO E PARA A HEAP CRESCER SE FOR PRECISO. NAO MODIFIQUE
-		if (index == heap.length - 1) {
-			heap = Arrays.copyOf(heap, heap.length + INCREASING_FACTOR);
+	private void cleanHeap() {
+		while (!isEmpty()) {
+			extractRootElement();
 		}
-		index++;
-		int auxIndex = index;
-		while (auxIndex > 0 && parent(auxIndex) >= 0 && heap[parent(auxIndex)].compareTo(element) < 0) {
-			heap[auxIndex] = heap[parent(auxIndex)];
-			auxIndex = parent(auxIndex);
+	}
+
+	private void insertCleanArray(T[] array) {
+		int i = 0;
+		while (i < array.length) {
+			if (array[i] != null) {
+				insert(array[i++]);
+			}
 		}
-		heap[auxIndex] = element;
 	}
 
 	@Override
