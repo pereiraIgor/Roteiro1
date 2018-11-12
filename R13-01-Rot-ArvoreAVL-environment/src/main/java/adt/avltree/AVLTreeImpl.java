@@ -16,6 +16,7 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 
 	// TODO Do not forget: you must override the methods insert and remove
 	// conveniently.
+	@Override
 	protected void insert(BSTNode<T> node, T element) {
 		if (node.isEmpty()) {
 			node.setData(element);
@@ -34,6 +35,7 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 		}
 	}
 
+	@Override
 	protected void remove(BSTNode<T> node) {
 		if (!node.isEmpty()) {
 			if (node.isLeaf()) {
@@ -86,30 +88,47 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 	// > 0 pesa para o lçado esquerdo
 
 	protected int calculateBalance(BSTNode<T> node) {
-		return height((BSTNode<T>) node.getLeft()) - height((BSTNode<T>) node.getRight());
+		int toReturn = 0;
+		if (node != new BSTNode<>()) {
+			toReturn = height((BSTNode<T>) node.getLeft()) - height((BSTNode<T>) node.getRight());
+		}
+		return toReturn;
+
 	}
 
 	// AUXILIARY
 	protected void rebalance(BSTNode<T> node) {
 		int balance = calculateBalance(node);
+		BSTNode<T> tessta = null;
 		if (Math.abs(balance) > 1) {
 			String testa = calcOfRotacion(node);
 			switch (testa) {
 			case "RR":
-				Util.leftRotation(node);
+				tessta = Util.leftRotation(node);
+				if (getRoot().equals(node)) {
+					root = tessta;
+				}
 				break;
 			case "LL":
-				Util.rightRotation(node);
+				tessta=Util.rightRotation(node);
+				if (getRoot().equals(node)) {
+					root = tessta;
+				}
 				break;
 			case "RL":
 				Util.rightRotation((BSTNode<T>) node.getRight());
-				Util.leftRotation(node);
+				tessta=Util.leftRotation(node);
+				if (getRoot().equals(node)) {
+					root = tessta;
+				}
 				break;
 			case "LR":
 				Util.leftRotation((BSTNode<T>) node.getLeft());
-				Util.rightRotation(node);
+				tessta=Util.rightRotation(node);
+				if (getRoot().equals(node)) {
+					root = tessta;
+				}
 				break;
-
 			}
 		}
 	}
@@ -118,21 +137,22 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 		int calculo = calculateBalance(node);
 		String saida = "";
 		int calculo2 = 0;
-		if (calculo < 1) {
-			calculo2 = calculateBalance((BSTNode<T>) node.getLeft());
-			saida += "L";
-			if (calculo2 <= 0) {
-				saida += "L";
-			} else {
-				saida += "R";
-			}
-		} else if (calculo > 1) {
+		// Ele pende para a direita, aplicavel
+		if (calculo < -1) {
 			calculo2 = calculateBalance((BSTNode<T>) node.getRight());
 			saida += "R";
-			if (calculo2 >= 0) {
+			if (calculo2 <= 0) {
 				saida += "R";
 			} else {
 				saida += "L";
+			}
+		} else if (calculo > 1) {
+			calculo2 = calculateBalance((BSTNode<T>) node.getLeft());
+			saida += "L";
+			if (calculo2 >= 0) {
+				saida += "L";
+			} else {
+				saida += "R";
 			}
 		}
 		return saida;
