@@ -13,6 +13,7 @@ import adt.bt.BTNode;
 public class StudentBSTTest {
 
 	private BSTImpl<Integer> tree;
+	private BSTImpl<Integer> tree2;
 	private BTNode<Integer> NIL = new BTNode<Integer>();
 
 	private void fillTree() {
@@ -25,6 +26,7 @@ public class StudentBSTTest {
 	@Before
 	public void setUp() {
 		tree = new BSTImpl<>();
+		tree2 = new BSTImpl<>();
 	}
 
 	@Test
@@ -166,5 +168,79 @@ public class StudentBSTTest {
 		assertEquals(new Integer(-40), tree.search(-40).getData());
 		assertEquals(new Integer(-34), tree.search(-34).getData());
 		assertEquals(NIL, tree.search(2534));
+	}
+	@Test
+	public void test1() {
+		tree2.insert(10);
+		tree2.insert(15);
+		tree2.insert(13);
+		tree2.insert(20);
+		tree2.insert(50);
+		tree2.insert(30);
+		tree2.insert(7);
+		tree2.insert(5);
+		tree2.insert(8);
+		assertArrayEquals(new Integer[] {10,7,5,8,15,13,20,50,30},tree2.preOrder());
+		assertArrayEquals(new Integer[] {5,8,7,13,30,50,20,15,10},tree2.postOrder());
+		assertArrayEquals(new Integer[] {5,7,8,10,13,15,20,30,50}, tree2.order());
+		
+		
+		tree2.remove(15);
+		
+		assertArrayEquals(new Integer[] {10,7,5,8,20,13,50,30},tree2.preOrder());
+		assertArrayEquals(new Integer[] {5,8,7,13,30,50,20,10},tree2.postOrder());
+		assertArrayEquals(new Integer[] {5,7,8,10,13,20,30,50}, tree2.order());
+		
+		tree2.remove(10);
+		assertArrayEquals(new Integer[] {13,7,5,8,20,50,30},tree2.preOrder());
+		assertArrayEquals(new Integer[] {5,8,7,30,50,20,13},tree2.postOrder());
+		assertArrayEquals(new Integer[] {5,7,8,13,20,30,50}, tree2.order());
+		
+		tree2.insert(17);
+		tree2.insert(60);
+		
+		assertArrayEquals(new Integer[] {13,7,5,8,20,17,50,30,60},tree2.preOrder());
+		assertArrayEquals(new Integer[] {5,8,7,17,30,60,50,20,13},tree2.postOrder());
+		assertArrayEquals(new Integer[] {5,7,8,13,17,20,30,50,60}, tree2.order());
+	}
+	
+	@Test
+	public void test2() {
+		
+		tree2.insert(10);
+		tree2.insert(15);
+		tree2.insert(13);
+		tree2.insert(20);
+		tree2.insert(50);
+		tree2.insert(30);
+		tree2.insert(7);
+		tree2.insert(5);
+		tree2.insert(8);
+		tree2.insert(null);
+		
+		assertArrayEquals(new Integer[] {10,7,5,8,15,13,20,50,30},tree2.preOrder());
+		assertArrayEquals(new Integer[] {5,8,7,13,30,50,20,15,10},tree2.postOrder());
+		assertArrayEquals(new Integer[] {5,7,8,10,13,15,20,30,50}, tree2.order());
+		
+		tree2.remove(null);
+		
+		assertArrayEquals(new Integer[] {10,7,5,8,15,13,20,50,30},tree2.preOrder());
+		assertArrayEquals(new Integer[] {5,8,7,13,30,50,20,15,10},tree2.postOrder());
+		assertArrayEquals(new Integer[] {5,7,8,10,13,15,20,30,50}, tree2.order());
+	}
+	
+	@Test
+	public void test3() {
+		for(int i = 0; i < 1000; i++) {
+			tree2.insert(i);
+			assertEquals(i+1,tree2.size());
+		}
+		
+		for(int i = 999; i >= 0; i--) {
+			tree2.remove(i);
+			assertEquals(i,tree2.size());
+		}
+		
+		assertEquals(0,tree2.size());
 	}
 }

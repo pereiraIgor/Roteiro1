@@ -61,18 +61,20 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	@Override
 	public void insert(T element) {
 		if (element != null) {
-			insert(getRoot(), element);
+			insert(root, element);
 		}
 	}
 
 	private void insert(BSTNode<T> node, T element) {
 		if (node.isEmpty()) {
 			node.setData(element);
+			
 			node.setLeft(new BSTNode<T>());
-			node.setRight(new BSTNode<T>());
 			node.getLeft().setParent(node);
+			
+			node.setRight(new BSTNode<T>());
 			node.getRight().setParent(node);
-
+			
 		} else {
 			if (node.getData().compareTo(element) < 0) {
 				insert((BSTNode<T>) node.getRight(), element);
@@ -262,8 +264,8 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	public void postOrder(BSTNode<T> node, ArrayList<Comparable> array) {
 		if (!node.isEmpty()) {
-			order((BSTNode<T>) node.getLeft(), array);
-			order((BSTNode<T>) node.getRight(), array);
+			postOrder((BSTNode<T>) node.getLeft(), array);
+			postOrder((BSTNode<T>) node.getRight(), array);
 			array.add(node.getData());
 		}
 
