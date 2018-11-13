@@ -16,7 +16,7 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 
 	// TODO Do not forget: you must override the methods insert and remove
 	// conveniently.
-	
+
 	protected void insert(BSTNode<T> node, T element) {
 		if (node.isEmpty()) {
 			node.setData(element);
@@ -24,7 +24,6 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 			node.setRight(new BSTNode<T>());
 			node.getLeft().setParent(node);
 			node.getRight().setParent(node);
-
 		} else {
 			if (node.getData().compareTo(element) < 0) {
 				insert((BSTNode<T>) node.getRight(), element);
@@ -35,7 +34,6 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 		}
 	}
 
-	
 	protected void remove(BSTNode<T> node) {
 		if (!node.isEmpty()) {
 			if (node.isLeaf()) {
@@ -68,7 +66,6 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 
 					} else {
 						root = (BSTNode<T>) root.getLeft();
-
 					}
 					rebalanceUp(node);
 				}
@@ -99,63 +96,32 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 	// AUXILIARY
 	protected void rebalance(BSTNode<T> node) {
 		int balance = calculateBalance(node);
-		BSTNode<T> tessta = null;
+		BSTNode<T> testa = null;
 		if (Math.abs(balance) > 1) {
-			String testa = calcOfRotacion(node);
-			switch (testa) {
-			case "RR":
-				tessta = Util.leftRotation(node);
-				if (getRoot().equals(node)) {
-					root = tessta;
+			if (balance < -1) {
+				int newBalance = calculateBalance((BSTNode<T>) node.getRight());
+				if (newBalance <= 0) {
+					testa = Util.leftRotation(node);
+				} else {
+					Util.rightRotation((BSTNode<T>) node.getRight());
+					testa =Util.leftRotation(node);
 				}
-				break;
-			case "LL":
-				tessta=Util.rightRotation(node);
-				if (getRoot().equals(node)) {
-					root = tessta;
+				if (node == root) {
+					root = testa;
 				}
-				break;
-			case "RL":
-				Util.rightRotation((BSTNode<T>) node.getRight());
-				tessta=Util.leftRotation(node);
-				if (getRoot().equals(node)) {
-					root = tessta;
+			} else {
+				int newBalance = calculateBalance((BSTNode<T>) node.getLeft());
+				if (newBalance >= 0) {
+					testa = Util.rightRotation(node);
+				} else {
+					Util.leftRotation((BSTNode<T>) node.getLeft());
+					testa = Util.rightRotation(node);
 				}
-				break;
-			case "LR":
-				Util.leftRotation((BSTNode<T>) node.getLeft());
-				tessta=Util.rightRotation(node);
-				if (getRoot().equals(node)) {
-					root = tessta;
+				if (node == root) {
+					root = testa;
 				}
-				break;
 			}
 		}
-	}
-
-	protected String calcOfRotacion(BSTNode<T> node) {
-		int calculo = calculateBalance(node);
-		String saida = "";
-		int calculo2 = 0;
-		// Ele pende para a direita, aplicavel
-		if (calculo < -1) {
-			calculo2 = calculateBalance((BSTNode<T>) node.getRight());
-			saida += "R";
-			if (calculo2 <= 0) {
-				saida += "R";
-			} else {
-				saida += "L";
-			}
-		} else if (calculo > 1) {
-			calculo2 = calculateBalance((BSTNode<T>) node.getLeft());
-			saida += "L";
-			if (calculo2 >= 0) {
-				saida += "L";
-			} else {
-				saida += "R";
-			}
-		}
-		return saida;
 	}
 
 	// AUXILIARY

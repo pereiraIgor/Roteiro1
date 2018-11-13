@@ -1,5 +1,7 @@
 package adt.avltree;
 
+import java.util.Arrays;
+
 import adt.bst.BSTNode;
 import adt.bt.Util;
 
@@ -11,39 +13,40 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 	private int RLcounter;
 
 	public AVLCountAndFillImpl() {
-
+		super();
 	}
 
 	// AUXILIARY
-	@Override
 	protected void rebalance(BSTNode<T> node) {
 		int balance = calculateBalance(node);
+		BSTNode<T> testa = null;
 		if (Math.abs(balance) > 1) {
-			String testa = calcOfRotacion(node);
-			switch (testa) {
-			case "RR":
-				RRcounter++;
-				Util.leftRotation(node);
-				break;
-			case "LL":
-				Util.rightRotation(node);
-				LLcounter++;
-				break;
-			case "RL":
-				RLcounter++;
-				RRcounter++;
-				LLcounter++;
-				Util.rightRotation((BSTNode<T>) node.getRight());
-				Util.leftRotation(node);
-				break;
-			case "LR":
-				LRcounter++;
-				LLcounter++;
-				RRcounter++;
-				Util.leftRotation((BSTNode<T>) node.getLeft());
-				Util.rightRotation(node);
-				break;
-
+			if (balance < -1) {
+				int newBalance = calculateBalance((BSTNode<T>) node.getRight());
+				if (newBalance <= 0) {
+					RRcounter++;
+					testa = Util.leftRotation(node);
+				} else {
+					RLcounter++;
+					Util.rightRotation((BSTNode<T>) node.getRight());
+					testa = Util.leftRotation(node);
+				}
+				if (node == root) {
+					root = testa;
+				}
+			} else {
+				int newBalance = calculateBalance((BSTNode<T>) node.getLeft());
+				if (newBalance >= 0) {
+					LLcounter++;
+					testa = Util.rightRotation(node);
+				} else {
+					LRcounter++;
+					Util.leftRotation((BSTNode<T>) node.getLeft());
+					testa = Util.rightRotation(node);
+				}
+				if (node == root) {
+					root = testa;
+				}
 			}
 		}
 	}
@@ -70,8 +73,27 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 
 	@Override
 	public void fillWithoutRebalance(T[] array) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		Arrays.sort(array);
+		T[] arrayAux = (T[]) new Comparable[array.length];
+		int metade = array.length / 2;
+		int addInArrayAux = 0;
+		arrayAux[addInArrayAux] = array[(metade)];
+		fillWithoutRebalanceArray(array, arrayAux, 0, metade - 1, ++addInArrayAux);
+		fillWithoutRebalanceArray(array, arrayAux, metade + 1, array.length - 1, ++addInArrayAux);
+		System.out.println(Arrays.toString(arrayAux));
+		for (int i = 0; i < arrayAux.length; i++) {
+			insert(arrayAux[i]);
+		}
+	}
+
+	public void fillWithoutRebalanceArray(T[] array, T[] arrayAux, int left, int right, int addInArrayAux) {
+		if (left <= right) {
+			int middle = (left + right) / 2;
+			arrayAux[addInArrayAux++] = array[middle];
+			fillWithoutRebalanceArray(array, arrayAux, left, middle - 1, addInArrayAux);
+			fillWithoutRebalanceArray(array, arrayAux, middle + 1, right, addInArrayAux);
+		}
+
 	}
 
 }

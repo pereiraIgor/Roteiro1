@@ -120,10 +120,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 	public void buildHeap(T[] array) {
 		cleanHeap();
 		insertCleanArray(array);
-		int middle = (int) Math.floor(heap.length / 2);
-		for (int i = middle; i >= 0; i--) {
-			heapify(i);
-		}
+		
 	}
 
 	@Override
