@@ -16,7 +16,7 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 
 	// TODO Do not forget: you must override the methods insert and remove
 	// conveniently.
-	@Override
+	
 	protected void insert(BSTNode<T> node, T element) {
 		if (node.isEmpty()) {
 			node.setData(element);
@@ -35,7 +35,7 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 		}
 	}
 
-	@Override
+	
 	protected void remove(BSTNode<T> node) {
 		if (!node.isEmpty()) {
 			if (node.isLeaf()) {

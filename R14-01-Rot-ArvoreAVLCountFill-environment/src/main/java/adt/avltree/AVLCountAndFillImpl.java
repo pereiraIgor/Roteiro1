@@ -15,26 +15,31 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 	}
 
 	// AUXILIARY
+	@Override
 	protected void rebalance(BSTNode<T> node) {
 		int balance = calculateBalance(node);
 		if (Math.abs(balance) > 1) {
 			String testa = calcOfRotacion(node);
 			switch (testa) {
 			case "RR":
-				
+				RRcounter++;
 				Util.leftRotation(node);
 				break;
 			case "LL":
-//				LLcounter++;
 				Util.rightRotation(node);
+				LLcounter++;
 				break;
 			case "RL":
-//				RLcounter++;
+				RLcounter++;
+				RRcounter++;
+				LLcounter++;
 				Util.rightRotation((BSTNode<T>) node.getRight());
 				Util.leftRotation(node);
 				break;
 			case "LR":
-				//LRcounter++;
+				LRcounter++;
+				LLcounter++;
+				RRcounter++;
 				Util.leftRotation((BSTNode<T>) node.getLeft());
 				Util.rightRotation(node);
 				break;
