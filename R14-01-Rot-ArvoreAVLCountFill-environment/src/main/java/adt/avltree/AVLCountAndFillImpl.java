@@ -75,12 +75,8 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 	public void fillWithoutRebalance(T[] array) {
 		Arrays.sort(array);
 		T[] arrayAux = (T[]) new Comparable[array.length];
-		int metade = array.length / 2;
-		int addInArrayAux = 0;
-		arrayAux[addInArrayAux] = array[(metade)];
-		fillWithoutRebalanceArray(array, arrayAux, 0, metade - 1, ++addInArrayAux);
-		fillWithoutRebalanceArray(array, arrayAux, metade + 1, array.length - 1, ++addInArrayAux);
-		System.out.println(Arrays.toString(arrayAux));
+
+		fillWithoutRebalanceArray(array, arrayAux, 0, array.length - 1, 0);
 		for (int i = 0; i < arrayAux.length; i++) {
 			insert(arrayAux[i]);
 		}
@@ -89,9 +85,9 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 	public void fillWithoutRebalanceArray(T[] array, T[] arrayAux, int left, int right, int addInArrayAux) {
 		if (left <= right) {
 			int middle = (left + right) / 2;
-			arrayAux[addInArrayAux++] = array[middle];
-			fillWithoutRebalanceArray(array, arrayAux, left, middle - 1, addInArrayAux);
-			fillWithoutRebalanceArray(array, arrayAux, middle + 1, right, addInArrayAux);
+			arrayAux[addInArrayAux] = array[middle];
+			fillWithoutRebalanceArray(array, arrayAux, left, middle - 1, (2 * addInArrayAux) + 1);
+			fillWithoutRebalanceArray(array, arrayAux, middle + 1, right, (2 * addInArrayAux) + 2);
 		}
 
 	}
