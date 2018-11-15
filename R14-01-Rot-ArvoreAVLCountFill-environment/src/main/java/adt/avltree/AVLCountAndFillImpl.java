@@ -73,12 +73,21 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 
 	@Override
 	public void fillWithoutRebalance(T[] array) {
+		int fim = array.length;
+		array = Arrays.copyOf(array, array.length + size());
+		T[] arrayAux = (T[]) new Comparable[2 * array.length + 1];
+		T[] novo = order();
+		root = new BSTNode<T>();
+		int inter = 0;
+		for (; fim < array.length; fim++) {
+			array[fim] = novo[inter++];
+		}
 		Arrays.sort(array);
-		T[] arrayAux = (T[]) new Comparable[array.length];
-
 		fillWithoutRebalanceArray(array, arrayAux, 0, array.length - 1, 0);
 		for (int i = 0; i < arrayAux.length; i++) {
-			insert(arrayAux[i]);
+			if (arrayAux[i] != null) {
+				insert(arrayAux[i]);
+			}
 		}
 	}
 
