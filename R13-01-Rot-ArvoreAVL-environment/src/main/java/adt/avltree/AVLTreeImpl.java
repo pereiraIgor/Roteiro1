@@ -14,9 +14,6 @@ import adt.bt.Util;
  */
 public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements AVLTree<T> {
 
-	// TODO Do not forget: you must override the methods insert and remove
-	// conveniently.
-
 	protected void insert(BSTNode<T> node, T element) {
 		if (node.isEmpty()) {
 			node.setData(element);
@@ -96,29 +93,29 @@ public class AVLTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements 
 	// AUXILIARY
 	protected void rebalance(BSTNode<T> node) {
 		int balance = calculateBalance(node);
-		BSTNode<T> testa = null;
+		BSTNode<T> toReturn = null;
 		if (Math.abs(balance) > 1) {
 			if (balance < -1) {
 				int newBalance = calculateBalance((BSTNode<T>) node.getRight());
 				if (newBalance <= 0) {
-					testa = Util.leftRotation(node);
+					toReturn = Util.leftRotation(node);
 				} else {
 					Util.rightRotation((BSTNode<T>) node.getRight());
-					testa =Util.leftRotation(node);
+					toReturn = Util.leftRotation(node);
 				}
 				if (node == root) {
-					root = testa;
+					root = toReturn;
 				}
 			} else {
 				int newBalance = calculateBalance((BSTNode<T>) node.getLeft());
 				if (newBalance >= 0) {
-					testa = Util.rightRotation(node);
+					toReturn = Util.rightRotation(node);
 				} else {
 					Util.leftRotation((BSTNode<T>) node.getLeft());
-					testa = Util.rightRotation(node);
+					toReturn = Util.rightRotation(node);
 				}
 				if (node == root) {
-					root = testa;
+					root = toReturn;
 				}
 			}
 		}
