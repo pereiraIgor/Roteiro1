@@ -1,5 +1,7 @@
 package adt.avltree;
 
+import java.util.Arrays;
+
 import adt.bst.BSTNode;
 import adt.bt.Util;
 
@@ -16,30 +18,31 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 
 	// AUXILIARY
 	protected void rebalance(BSTNode<T> node) {
-		int balance = calculateBalance(node);
-		if (Math.abs(balance) > 1) {
-			String testa = calcOfRotacion(node);
-			switch (testa) {
-			case "RR":
-				
-				Util.leftRotation(node);
-				break;
-			case "LL":
-//				LLcounter++;
-				Util.rightRotation(node);
-				break;
-			case "RL":
-//				RLcounter++;
-				Util.rightRotation((BSTNode<T>) node.getRight());
-				Util.leftRotation(node);
-				break;
-			case "LR":
-				//LRcounter++;
-				Util.leftRotation((BSTNode<T>) node.getLeft());
-				Util.rightRotation(node);
-				break;
-
+		int pesoPai = calculateBalance(node);
+		if (pesoPai > 1) {// pende para o lado esquerdo, rotação para a direita
+			int pesoFilhoEsquerdo = calculateBalance((BSTNode<T>) node.getLeft());
+			if (pesoFilhoEsquerdo < 0) {
+				Util.leftRotation((BSTNode<T>) node.getLeft());// caso LR
+				LRcounter++;
+			} else {
+				LLcounter++;
 			}
+			BSTNode<T> saida = Util.rightRotation(node);// LL
+			if (node == root)
+				root = saida;
+
+		} else if (pesoPai < -1) {// pende para a direita, rotação para a esquerda
+			int pesoFilhoDireito = calculateBalance((BSTNode<T>) node.getRight());
+
+			if (pesoFilhoDireito > 0) { // caso RL
+				Util.rightRotation((BSTNode<T>) node.getRight());
+				RLcounter++;
+			} else {
+				RRcounter++;
+			}
+			BSTNode<T> saida = Util.leftRotation(node);// RR
+			if (node == root)
+				root = saida;
 		}
 	}
 
@@ -65,8 +68,18 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 
 	@Override
 	public void fillWithoutRebalance(T[] array) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		Arrays.sort(array);
+		int fator = array.length / 2;
+		while (fator > 0) {
+			
+			while (fator < array.length) {
+				insert(array[fator]);
+				fator += fator;
+			}
+			
+			fator = fator / 2;
+		}
+
 	}
 
 }
