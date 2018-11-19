@@ -81,4 +81,24 @@ public class StudentAVLTest {
 		avl.insert(7);
 		assertEquals(new Integer[] { 1, 2, 3, 4, 5, 6, 7 }, avl.order());
 	}
+
+	@Test
+	public void test() {
+		for (int i = 0; i < 7; i++)
+			avl.insert(i);
+
+		assertArrayEquals(new Integer[] { 0, 1, 2, 3, 4, 5, 6 }, avl.order());
+		avl.remove(3);
+		assertEquals(4, (int) avl.getRoot().getData());
+		avl.remove(4);
+		avl.remove(5);
+		assertEquals(1, (int) avl.getRoot().getData());
+	}
+
+	@Test
+	public void test1() {
+		for (int i = 0; i < 5; i++)
+			avl.insert(i);
+
+	}
 }

@@ -13,36 +13,41 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 	private int RLcounter;
 
 	public AVLCountAndFillImpl() {
-
+		super();
 	}
 
 	// AUXILIARY
 	protected void rebalance(BSTNode<T> node) {
-		int pesoPai = calculateBalance(node);
-		if (pesoPai > 1) {// pende para o lado esquerdo, rotação para a direita
-			int pesoFilhoEsquerdo = calculateBalance((BSTNode<T>) node.getLeft());
-			if (pesoFilhoEsquerdo < 0) {
-				Util.leftRotation((BSTNode<T>) node.getLeft());// caso LR
-				LRcounter++;
+		int balance = calculateBalance(node);
+		BSTNode<T> testa = null;
+		if (Math.abs(balance) > 1) {
+			if (balance < -1) {
+				int newBalance = calculateBalance((BSTNode<T>) node.getRight());
+				if (newBalance <= 0) {
+					RRcounter++;
+					testa = Util.leftRotation(node);
+				} else {
+					RLcounter++;
+					Util.rightRotation((BSTNode<T>) node.getRight());
+					testa = Util.leftRotation(node);
+				}
+				if (node == root) {
+					root = testa;
+				}
 			} else {
-				LLcounter++;
+				int newBalance = calculateBalance((BSTNode<T>) node.getLeft());
+				if (newBalance >= 0) {
+					LLcounter++;
+					testa = Util.rightRotation(node);
+				} else {
+					LRcounter++;
+					Util.leftRotation((BSTNode<T>) node.getLeft());
+					testa = Util.rightRotation(node);
+				}
+				if (node == root) {
+					root = testa;
+				}
 			}
-			BSTNode<T> saida = Util.rightRotation(node);// LL
-			if (node == root)
-				root = saida;
-
-		} else if (pesoPai < -1) {// pende para a direita, rotação para a esquerda
-			int pesoFilhoDireito = calculateBalance((BSTNode<T>) node.getRight());
-
-			if (pesoFilhoDireito > 0) { // caso RL
-				Util.rightRotation((BSTNode<T>) node.getRight());
-				RLcounter++;
-			} else {
-				RRcounter++;
-			}
-			BSTNode<T> saida = Util.leftRotation(node);// RR
-			if (node == root)
-				root = saida;
 		}
 	}
 
@@ -68,16 +73,30 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 
 	@Override
 	public void fillWithoutRebalance(T[] array) {
+		int fim = array.length;
+		array = Arrays.copyOf(array, array.length + size());
+		T[] arrayAux = (T[]) new Comparable[2 * array.length + 1];
+		T[] novo = order();
+		root = new BSTNode<T>();
+		int inter = 0;
+		for (; fim < array.length; fim++) {
+			array[fim] = novo[inter++];
+		}
 		Arrays.sort(array);
-		int fator = array.length / 2;
-		while (fator > 0) {
-			
-			while (fator < array.length) {
-				insert(array[fator]);
-				fator += fator;
+		fillWithoutRebalanceArray(array, arrayAux, 0, array.length - 1, 0);
+		for (int i = 0; i < arrayAux.length; i++) {
+			if (arrayAux[i] != null) {
+				insert(arrayAux[i]);
 			}
-			
-			fator = fator / 2;
+		}
+	}
+
+	public void fillWithoutRebalanceArray(T[] array, T[] arrayAux, int left, int right, int addInArrayAux) {
+		if (left <= right) {
+			int middle = (left + right) / 2;
+			arrayAux[addInArrayAux] = array[middle];
+			fillWithoutRebalanceArray(array, arrayAux, left, middle - 1, (2 * addInArrayAux) + 1);
+			fillWithoutRebalanceArray(array, arrayAux, middle + 1, right, (2 * addInArrayAux) + 2);
 		}
 
 	}
