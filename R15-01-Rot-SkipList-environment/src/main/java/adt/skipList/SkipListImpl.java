@@ -43,13 +43,13 @@ public class SkipListImpl<T> implements SkipList<T> {
 		}
 		x = x.forward[0];
 
-		if (x.key == key) {
+		if (x.getKey() == key) {
 			x.setValue(newValue);
 		} else {
 			SkipListNode<T> newNode = new SkipListNode<T>(key, height, newValue);
 			for (int i = 0; i < height; i++) {
 				newNode.forward[i] = update[i].forward[i];
-				update[i].forward[i] = x;
+				update[i].forward[i] = newNode;
 			}
 		}
 
@@ -108,7 +108,7 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 	@Override
 	public int size() {
-		SkipListNode<T> x = root;
+		SkipListNode<T> x = root.getForward(0);
 		int sizeToReturn = 0;
 		while (x.forward[0].key < Integer.MAX_VALUE) {
 			sizeToReturn++;
