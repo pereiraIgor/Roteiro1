@@ -30,21 +30,26 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 	@Override
 	public void insert(int key, T newValue, int height) {
-		SkipListNode<T> x = root.getForward(maxHeight);
-		for (int i = maxHeight; i > 0; i--) {
+		SkipListNode<T>[] update = root.getForward();
+
+		SkipListNode<T> x = root.getForward(maxHeight-1);
+		for (int i = maxHeight-1; i >= 0; i--) {
 			while (x.forward[i].key < key) {
 				x = x.forward[i];
 			}
+			update[i] = x;
 		}
-		x = x.forward[1];
+		x = x.forward[0];
 
 		if (x.key == key) {
 			x.setValue(newValue);
 		} else {
-
+			SkipListNode<T> newNode = new SkipListNode<T>(key, height, newValue);
+			for (int i = 0; i < height; i++) {
+				newNode.forward[i] = update[i].forward[i];
+				update[i].forward[i] = x;
+			}
 		}
-
-		SkipListNode<T> newNode = new SkipListNode<T>(key, height, newValue);
 
 	}
 
@@ -62,14 +67,14 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 	@Override
 	public SkipListNode<T> search(int key) {
-		SkipListNode<T> x = root.getForward(maxHeight);
-		for (int i = maxHeight; i > 0; i--) {
+		SkipListNode<T> x = root.getForward(maxHeight-1);
+		for (int i = maxHeight - 1; i >= 0; i--) {
 			while (x.forward[i].key < key) {
 				x = x.forward[i];
 			}
 		}
 		// pega o proximo do x, pois ele sempre vai chegar no 1
-		x = x.getForward(1);
+		x = x.getForward(0);
 		SkipListNode<T> toReturn = null;
 		if (x.getKey() == key) {
 			toReturn = x;
