@@ -1,5 +1,7 @@
 package adt.skipList;
 
+import java.awt.List;
+
 public class SkipListImpl<T> implements SkipList<T> {
 
 	protected SkipListNode<T> root;
@@ -30,9 +32,9 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 	@Override
 	public void insert(int key, T newValue, int height) {
-		SkipListNode<T>[] update = root.getForward();
+		SkipListNode<T>[] update = new SkipListNode[maxHeight];
 
-		SkipListNode<T> x = root.getForward(maxHeight - 1);
+		SkipListNode<T> x = root;
 		for (int i = maxHeight - 1; i >= 0; i--) {
 			while (x.forward[i].key < key) {
 				x = x.forward[i];
@@ -55,8 +57,8 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 	@Override
 	public void remove(int key) {
-		SkipListNode<T>[] update = root.getForward();
-		SkipListNode<T> x = root.getForward(maxHeight - 1);
+		SkipListNode<T>[] update = new SkipListNode[maxHeight];
+		SkipListNode<T> x = root;
 		for (int i = maxHeight - 1; i >= 0; i--) {
 			while (x.forward[i].key < key) {
 				x = x.forward[i];
@@ -77,13 +79,18 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 	@Override
 	public int height() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		SkipListNode<T> x = root;
+		for (int i = maxHeight - 1; i >= 0; i--) {
+			if (x.getForward(i).key < Integer.MAX_VALUE) {
+				return i + 1;
+			}
+		}
+		return -1;
 	}
 
 	@Override
 	public SkipListNode<T> search(int key) {
-		SkipListNode<T> x = root.getForward(maxHeight - 1);
+		SkipListNode<T> x = root;
 		for (int i = maxHeight - 1; i >= 0; i--) {
 			while (x.forward[i].key < key) {
 				x = x.forward[i];
@@ -101,8 +108,13 @@ public class SkipListImpl<T> implements SkipList<T> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		SkipListNode<T> x = root;
+		int sizeToReturn = 0;
+		while (x.forward[0].key < Integer.MAX_VALUE) {
+			sizeToReturn++;
+			x = x.forward[0];
+		}
+		return sizeToReturn;
 	}
 
 	@Override
