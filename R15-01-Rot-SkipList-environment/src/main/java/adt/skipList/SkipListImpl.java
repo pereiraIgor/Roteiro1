@@ -78,12 +78,16 @@ public class SkipListImpl<T> implements SkipList<T> {
    @Override
    public int height() {
       SkipListNode<T> x = root;
+      int toReturn = 0;
       for (int i = maxHeight - 1; i >= 0; i--) {
          if (x.getForward(i).key < Integer.MAX_VALUE) {
-            return i + 1;
+            toReturn = i+1;
          }
       }
-      return -1;
+      if(toReturn == 0) {
+    	  toReturn = -1;
+      }
+      return toReturn;
    }
 
    @Override
@@ -94,7 +98,6 @@ public class SkipListImpl<T> implements SkipList<T> {
             x = x.forward[i];
          }
       }
-      // pega o proximo do x, pois ele sempre vai chegar no 1
       x = x.getForward(0);
       SkipListNode<T> toReturn = null;
       if (x.getKey() == key) {
