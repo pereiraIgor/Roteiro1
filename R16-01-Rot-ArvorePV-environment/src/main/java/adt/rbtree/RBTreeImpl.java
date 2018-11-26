@@ -104,17 +104,17 @@ public class RBTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements R
 
 	@Override
 	public void insert(T value) {
-		insert(root, value);
+		insert((RBNode<T>) root, value);
 	}
 
 	protected void insert(RBNode<T> node, T element) {
 		if (node.isEmpty()) {
 			node.setData(element);
 
-			node.setLeft(new BSTNode<T>());
+			node.setLeft(new RBNode<>());
 			node.getLeft().setParent(node);
 
-			node.setRight(new BSTNode<T>());
+			node.setRight(new RBNode<>());
 			node.getRight().setParent(node);
 			node.setColour(Colour.RED);
 			fixUpCase1(node);
@@ -129,16 +129,36 @@ public class RBTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements R
 
 	@Override
 	public RBNode<T>[] rbPreOrder() {
-		RBNode<T>[] array = new RBNode[size()];
-		rbPreOrder((RBNode<T>)root, array,0);
+
+		RBNode<T>[] array = new RBNode[2 * size() + 2];
+		rbPreOrder((RBNode<T>) root, array, 0);
+		array = returnCleanArray(array);
 		return array;
 	}
 
-	protected void rbPreOrder(RBNode<T> node, RBNode<T>[] array, int auxIndex) {
+	private RBNode<T>[] returnCleanArray(RBNode<T>[] array) {
+		int index = 0;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] != null) {
+				index++;
+			}
+		}
+
+		RBNode<T>[] arrayToReturn = new RBNode[index];
+		int indexAux = 0;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] != null) {
+				arrayToReturn[indexAux++] = array[i];
+			}
+		}
+		return arrayToReturn;
+	}
+
+	protected void rbPreOrder(RBNode<T> node, RBNode<T>[] array, int index) {
 		if (!node.isEmpty()) {
-			array[auxIndex] = node;
-			rbPreOrder((RBNode<T>) node.getLeft(), array,2 *auxIndex +1);
-			rbPreOrder((RBNode<T>) node.getRight(), array,2 *auxIndex +2);
+			array[index] = node;
+			rbPreOrder((RBNode<T>) node.getLeft(), array, 2 * index + 1);
+			rbPreOrder((RBNode<T>) node.getRight(), array, 2 * index + 2);
 		}
 	}
 
