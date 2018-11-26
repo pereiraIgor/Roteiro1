@@ -1,6 +1,9 @@
 package adt.rbtree;
 
+import java.util.ArrayList;
+
 import adt.bst.BSTImpl;
+import adt.bst.BSTNode;
 import adt.bt.Util;
 import adt.rbtree.RBNode.Colour;
 
@@ -11,8 +14,20 @@ public class RBTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements R
 	}
 
 	protected int blackHeight() {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return blackHeight((RBNode<T>) root);
+	}
+
+	protected int blackHeight(RBNode<T> node) {
+		int toReturn = 0;
+		if (!node.isEmpty()) {
+			if (node.getColour() == Colour.BLACK) {
+				toReturn += 1;
+			}
+			int leftHeight = blackHeight((RBNode<T>) node.getLeft());
+			int rightHeight = blackHeight((RBNode<T>) node.getRight());
+			toReturn = Math.max(leftHeight, rightHeight);
+		}
+		return toReturn;
 	}
 
 	protected boolean verifyProperties() {
@@ -50,28 +65,100 @@ public class RBTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements R
 	 * BLACK.
 	 */
 	private boolean verifyChildrenOfRedNodes() {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return verifyChildrenOfRedNodes((RBNode<T>) root);
+	}
+
+	private boolean verifyChildrenOfRedNodes(RBNode<T> node) {
+		boolean toReturn = true;
+		if (!node.isEmpty()) {
+			RBNode<T> leftSon = (RBNode<T>) node.getLeft();
+			RBNode<T> rightSon = (RBNode<T>) node.getRight();
+			if (node.getColour() == Colour.RED) {
+				if (leftSon.getColour() == Colour.RED || rightSon.getColour() == Colour.RED) {
+					toReturn = false;
+				}
+			} else {
+
+				boolean leftVerify = verifyChildrenOfRedNodes(leftSon);
+				boolean rightVerify = verifyChildrenOfRedNodes(rightSon);
+				if (!toReturn) {
+					toReturn = leftVerify && rightVerify;
+				}
+			}
+		}
+		return toReturn;
 	}
 
 	/**
 	 * Verifies the black-height property from the root.
 	 */
 	private boolean verifyBlackHeight() {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+		boolean toReturn = true;
+		if (blackHeight((RBNode<T>) root.getLeft()) == blackHeight((RBNode<T>) root.getRight())) {
+			toReturn = true;
+		} else {
+			toReturn = false;
+		}
+		return toReturn;
 	}
 
 	@Override
 	public void insert(T value) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+		insert((RBNode<T>) root, value);
+	}
+
+	protected void insert(RBNode<T> node, T element) {
+		if (node.isEmpty()) {
+			node.setData(element);
+
+			node.setLeft(new RBNode<>());
+			node.getLeft().setParent(node);
+
+			node.setRight(new RBNode<>());
+			node.getRight().setParent(node);
+			node.setColour(Colour.RED);
+			fixUpCase1(node);
+		} else {
+			if (node.getData().compareTo(element) < 0) {
+				insert((RBNode<T>) node.getRight(), element);
+			} else if (node.getData().compareTo(element) > 0) {
+				insert((RBNode<T>) node.getLeft(), element);
+			}
+		}
 	}
 
 	@Override
 	public RBNode<T>[] rbPreOrder() {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+		RBNode<T>[] array = new RBNode[2 * size() + 2];
+		rbPreOrder((RBNode<T>) root, array, 0);
+		array = returnCleanArray(array);
+		return array;
+	}
+
+	private RBNode<T>[] returnCleanArray(RBNode<T>[] array) {
+		int index = 0;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] != null) {
+				index++;
+			}
+		}
+
+		RBNode<T>[] arrayToReturn = new RBNode[index];
+		int indexAux = 0;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] != null) {
+				arrayToReturn[indexAux++] = array[i];
+			}
+		}
+		return arrayToReturn;
+	}
+
+	protected void rbPreOrder(RBNode<T> node, RBNode<T>[] array, int index) {
+		if (!node.isEmpty()) {
+			array[index] = node;
+			rbPreOrder((RBNode<T>) node.getLeft(), array, 2 * index + 1);
+			rbPreOrder((RBNode<T>) node.getRight(), array, 2 * index + 2);
+		}
 	}
 
 	// FIXUP methods
@@ -113,12 +200,18 @@ public class RBTreeImpl<T extends Comparable<T>> extends BSTImpl<T> implements R
 			next = (RBNode<T>) node.getLeft();
 		} else if (node.getParent().getLeft() == node && parent.getParent().getRight() == parent) {
 			Util.rightRotation(parent);
+			next = (RBNode<T>) node.getRight();
 		}
 		fixUpCase5(node);
 	}
 
 	protected void fixUpCase5(RBNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+		((RBNode<T>) node.getParent()).setColour(Colour.BLACK);
+		((RBNode<T>) node.getParent().getParent()).setColour(Colour.RED);
+		if (node.getParent().getLeft() == node) {
+			Util.rightRotation((RBNode<T>) node.getParent().getParent());
+		} else {
+			Util.leftRotation((RBNode<T>) node.getParent().getParent());
+		}
 	}
 }
