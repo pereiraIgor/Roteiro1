@@ -45,11 +45,11 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 	private void depthLeftOrder(BNode<T>[] arrayToReturn, int index, BNode<T> node) {
 		if (node.isLeaf()) {
 		} else {
-			for (BNode<T> no : node.children) {
-				toReturn += size(no);
+			for(BNode<T> no : node.getElements()) {
+				
 			}
 		}
-		return toReturn;
+		
 	}
 
 	@Override
@@ -96,13 +96,12 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 	}
 
 	private void split(BNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		
 	}
 
 	private void promote(BNode<T> node) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		T saida = node.getElements().get(node.elements.size()/2);
+		node.getParent().addElement(saida);
 	}
 
 	// NAO PRECISA IMPLEMENTAR OS METODOS ABAIXO
