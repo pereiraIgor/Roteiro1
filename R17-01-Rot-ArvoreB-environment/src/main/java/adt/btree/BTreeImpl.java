@@ -22,34 +22,46 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 
 	@Override
 	public int height() {
-		return height(this.root);
+		int toReturn = -1;
+		if (!isEmpty())
+			toReturn = height(root);
+		return toReturn;
 	}
 
 	private int height(BNode<T> node) {
 		int toReturn = 0;
-		if (node.isLeaf()) {
-			toReturn = 1;
-		} else {
+		if (!node.isLeaf()) {
 			toReturn = 1 + height(node.children.getFirst());
 		}
+
 		return toReturn;
 	}
 
 	@Override
 	public BNode<T>[] depthLeftOrder() {
-		BNode<T>[] arrayToReturn = new BNode[size()];
-		depthLeftOrder(arrayToReturn, 0, root);
-		return arrayToReturn;
+		BNode<T>[] toReturn = new BNode[numberOfNodes(this.getRoot()) + 1];
+		if (!this.isEmpty()) {
+			depthLeftOrder(toReturn, 0, this.getRoot());
+		}
+		return toReturn;
 	}
 
-	private void depthLeftOrder(BNode<T>[] arrayToReturn, int index, BNode<T> node) {
-		if (node.isLeaf()) {
-		} else {
-			for(BNode<T> no : node.getElements()) {
-				
-			}
+	private int depthLeftOrder(BNode<T>[] arrayToReturn, int index, BNode<T> node) {
+		arrayToReturn[index] = node;
+		index++;
+		for (int i = 0; i < node.children.size(); i++) {
+			index = depthLeftOrder(arrayToReturn, index, node.children.get(i));
 		}
-		
+		return index;
+
+	}
+
+	private int numberOfNodes(BNode<T> node) {
+		int nodes = node.children.size();
+		for (int i = 0; i < node.children.size(); i++) {
+			nodes += this.numberOfNodes(node.children.get(i));
+		}
+		return nodes;
 	}
 
 	@Override
@@ -58,12 +70,9 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 	}
 
 	private int size(BNode<T> node) {
-		int toReturn = 0;
-		if (node.isLeaf()) {
-		} else {
-			for (BNode<T> no : node.children) {
-				toReturn += size(no);
-			}
+		int toReturn = node.getElements().size();
+		for (int i = 0; i < node.children.size(); i++) {
+			toReturn += size(node.children.get(i));
 		}
 		return toReturn;
 	}
@@ -90,18 +99,39 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 
 	@Override
 	public void insert(T element) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		insert(root, element);
 
+	}
+
+	private void insert(BNode<T> node, T element) {
+		int i = 0;
+		while (i < node.elements.size() && element.compareTo(node.elements.get(i)) > 0) {
+			i++;
+		}
+		if (node.isLeaf()) {
+			node.addElement(element);
+			if (node.size() > node.getMaxKeys()) {
+				node.split();
+
+				while (node.parent != null) {
+					node = node.parent;
+				}
+
+				this.root = node;
+			}
+		} else {
+			this.insert(node.children.get(i), element);
+		}
 	}
 
 	private void split(BNode<T> node) {
-		
+		// TODO Implement your code here
+		throw new UnsupportedOperationException("Not Implemented yet!");
 	}
 
 	private void promote(BNode<T> node) {
-		T saida = node.getElements().get(node.elements.size()/2);
-		node.getParent().addElement(saida);
+		// TODO Implement your code here
+		throw new UnsupportedOperationException("Not Implemented yet!");
 	}
 
 	// NAO PRECISA IMPLEMENTAR OS METODOS ABAIXO

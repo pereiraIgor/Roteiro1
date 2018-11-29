@@ -84,16 +84,66 @@ public class BNode<T extends Comparable<T>> {
 		return this.elements.get(index);
 	}
 
-	protected void split() {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+	protected void split(){
+		int mediana = (this.size()/2);
+		BNode<T> left = this.splitLeft(mediana);
+		BNode<T> right = this.splitRight(mediana);
+
+		if (this.parent == null) {
+			this.parent = new BNode<T>(order);
+			this.parent.addChild(0, this);
+		}		
+
+		this.promote(mediana);
+
+		int indexOfMediana = this.findIndexOfMediana(this.parent, this.elements.get(mediana));
+
+		this.parent.addChild(indexOfMediana, left);
+		this.parent.addChild(indexOfMediana+1, right);
+
+		left.setParent(this.parent);
+		right.setParent(this.parent);
+
+		this.parent.removeChild(this);
+		if (this.parent.size() > this.parent.getMaxKeys()) {
+			this.parent.split();
+		}
 	}
 
-	protected void promote() {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+	private BNode<T> splitLeft(int mediana){
+		BNode<T> left = new BNode<>(order);
+		for(int i = 0; i < mediana; i++) {
+			left.elements.add(this.elements.get(i));
+		}
+		if(!this.isLeaf()) {
+			for(int i = 0; i <= mediana; i++) {
+				left.addChild(i, this.children.get(i));
+			}
+		}
+		return left;
 	}
 
+	private BNode<T> splitRight(int mediana){
+		BNode<T> right = new BNode<>(order);
+		for(int i = mediana+1; i < this.elements.size(); i++) {
+			right.elements.add(this.elements.get(i));
+		}
+		if(!this.isLeaf()) {
+			for(int i = mediana +1; i < this.children.size(); i++) {
+				right.addChild(i - mediana - 1, this.children.get(i));
+			}
+		}
+		return right;
+	}
+
+	private int findIndexOfMediana(BNode<T> node, T element) {
+		return node.elements.indexOf(element);
+	}
+
+	protected void promote(int mediana){
+		T toPromote = this.elements.get(mediana);
+		this.parent.addElement(toPromote);
+	}
 	public LinkedList<T> getElements() {
 		return elements;
 	}
