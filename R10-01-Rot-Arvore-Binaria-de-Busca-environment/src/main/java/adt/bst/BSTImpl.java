@@ -22,7 +22,6 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	@Override
 	public int height() {
 		return height(root);
-
 	}
 
 	protected int height(BSTNode<T> node) {
@@ -43,7 +42,6 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	protected BSTNode<T> search(BSTNode<T> node, T element) {
 		BSTNode<T> saida = new BSTNode<T>();
-		
 		if (element != null) {
 			if (!node.isEmpty() && !node.getData().equals(element)) {
 				if (node.getData().compareTo(element) < 0) {
@@ -68,13 +66,13 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	protected void insert(BSTNode<T> node, T element) {
 		if (node.isEmpty()) {
 			node.setData(element);
-			
+
 			node.setLeft(new BSTNode<T>());
 			node.getLeft().setParent(node);
-			
+
 			node.setRight(new BSTNode<T>());
 			node.getRight().setParent(node);
-			
+
 		} else {
 			if (node.getData().compareTo(element) < 0) {
 				insert((BSTNode<T>) node.getRight(), element);
@@ -163,7 +161,6 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	@Override
 	public void remove(T element) {
 		remove(search(element));
-
 	}
 
 	private void remove(BSTNode<T> node) {
